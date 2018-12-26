@@ -1,0 +1,8 @@
+# System Files
+*.DS_Store
+
+generated/*
+bin/
+.idea/
+.overture
+*.iml
