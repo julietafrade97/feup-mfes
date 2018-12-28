@@ -1,0 +1,33 @@
+class Event
+	types
+		public String = seq of char;
+		public Date :: day : nat
+									month: nat
+									year : nat;
+		public Time :: hour : nat
+									minutes: nat;					
+		public State = <Available> | <SoldOut> | <Closed>;
+	values
+		
+	instance variables
+		public title: String;
+		public category: String;
+		public state: State;
+		public dateStart: Date;
+		public dateEnd: Date;
+		public timeStart: Time;
+		public timeEnd: Time;
+		public description: String;
+		public price: real;
+		public city: String;
+		public address: String;
+		public totalTickets: nat;
+		public soldTickets: nat;
+		
+	operations
+	
+	functions
+	
+	traces
+	
+end Event

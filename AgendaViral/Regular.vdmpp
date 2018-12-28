@@ -1,0 +1,18 @@
+class Regular is subclass of User
+	types
+	
+	values
+	
+	instance variables
+		protected firstName: seq of char;
+		protected lastName: seq of char;
+		protected balance: real;
+		protected nTicketsBought: nat;
+	
+	operations
+	
+	functions
+	
+	traces
+
+end Regular

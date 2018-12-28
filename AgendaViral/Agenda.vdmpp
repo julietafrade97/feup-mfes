@@ -1,0 +1,27 @@
+class Agenda
+	types
+		String = seq of char
+	
+	values
+	
+	instance variables
+		public categories: set of String := {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
+		public users: map seq of char to User := {|->};
+		public events: set of Event := {}
+		
+	operations
+		public Agenda: set of User * set of Event ==> Agenda 
+		Agenda(u, e) == (
+			for all user in set u do(
+				users := users ++ {user.getEmail() |-> user}
+			);
+			for all event in set e do(
+				events := events ++ event
+			)
+		)
+			
+	functions
+	
+	traces
+
+end Agenda

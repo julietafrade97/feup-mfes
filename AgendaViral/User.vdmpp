@@ -1,0 +1,16 @@
+class User
+	types
+	
+	values
+		
+	instance variables
+		protected email: seq of char;
+		protected password: seq of char;
+		
+	operations
+	
+	functions
+	
+	traces
+
+end User
