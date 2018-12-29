@@ -19,6 +19,9 @@ class Agenda
 		-- Agenda's list of events
 		public events: set of Event := {};
 		
+		-- Logged in user. If nil means there is no user logged in.
+		public loggedInUser: [User] := nil;
+		
 	operations
 		
 		-- Constructor
@@ -39,6 +42,24 @@ class Agenda
 		-- Add event
 		public addEvent: Event ==> ()
 		addEvent(e) == events := events union {e};
+		
+		-- Logs the user in. Returns true if successful and updates the loggedInUser variable
+		public login: String * String ==> bool
+		login(email, password) == (
+			dcl user: User;
+			
+			if (len email < 5 or len password < 8) then return false ; -- email and password not valid
+			
+			if (email in set dom users) then ( -- verifies if user exists
+				user := users(email);
+				if user.checkLogin(email, password) then ( -- verifies if password matches to email
+					loggedInUser := user;
+					return true;
+				);
+			);
+			return false;
+		)
+		post (RESULT = true and loggedInUser <> nil) or RESULT = false;
 		
 		-- *FIND EVENTS*
 		
