@@ -18,7 +18,7 @@ class User
 	
 		-- Constructor
 		public User : String * String ==> User
-		User(mail, passw) == (email := mail ; password := passw ;)
+		User(mail, passw) == (email := mail ; password := passw ; return self;)
 		pre len mail >= 5 and len passw >= 8
 		post email = mail and password = passw;
 		

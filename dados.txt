@@ -1,0 +1,20 @@
+create a:= new Agenda()
+print a.addUser(new User("sofia@gmail.com","sofia12345"))
+print a.addUser(new User("julieta@gmail.com","julieta12345"))
+print a.addEvent(new Event("Concerto welele", "Maia"))
+print a
+
+
+protected title: String;
+protected category: String;		
+protected state: State;
+protected dateStart: Date;
+protected dateEnd: Date;
+protected timeStart: Time;
+protected timeEnd: Time;
+protected description: String;
+protected price: real;
+protected city: String;		
+protected address: String;
+protected totalTickets: nat;
+protected soldTickets: nat;

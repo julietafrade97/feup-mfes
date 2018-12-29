@@ -1,14 +1,18 @@
 class Agenda
 	types
 	
-		public String = seq of char
+		public String = seq of char;
+		public MultiMap = map String to set of String
 	
 	values
 	
 	instance variables
 	
 		-- Agenda's list of categories
-		public categories: set of String := {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
+		public categories: set of String := {};
+		
+		-- Agenda's list of locations (multimap district->cities)
+		public locations: MultiMap := {|->};
 		
 		-- Agenda's map of users
 		public users: map seq of char to User := {|->};
@@ -17,14 +21,16 @@ class Agenda
 		public events: set of Event := {};
 		
 	operations
-	
+		
 		-- Constructor
-		public Agenda: set of User * set of Event ==> Agenda 
-		Agenda(u, e) == (
-			for all user in set u do(
-				users := users ++ {user.getEmail() |-> user}
-			);
-			events := e;
+		public Agenda: () ==> Agenda 
+		Agenda() == (
+			categories :=  {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
+			locations := {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"},
+										"Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"},
+										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousã"}};
+
+			return self;
 		);
 		
 		-- Add user
