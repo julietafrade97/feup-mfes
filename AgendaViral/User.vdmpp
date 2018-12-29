@@ -1,16 +1,28 @@
 class User
 	types
 	
-	values
+		public String = seq of char;
 		
 	instance variables
-		protected email: seq of char;
-		protected password: seq of char;
+	
+		-- User's email
+		protected email: String;
+		
+		-- User's password
+		protected password: String;
+		
+		-- Restricts some invalid emails. At least 5 characters are needed to write a simple e-mail, eg.: a@b.c
+		inv len email >= 5;
 		
 	operations
 	
-	functions
-	
-	traces
+		-- Constructor
+		public User : String * String ==> User
+		User(mail, passw) == (email := mail ; password := passw ;)
+		pre len mail >= 5 and len passw >= 8
+		post email = mail and password = passw;
+		
+		-- Returns the user’s email
+		public pure getEmail: () ==> seq of char getEmail () == return email ;
 
 end User

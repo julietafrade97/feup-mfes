@@ -1,5 +1,6 @@
 class Event
 	types
+	
 		public String = seq of char;
 		public Date :: day : nat
 									month: nat
@@ -7,27 +8,52 @@ class Event
 		public Time :: hour : nat
 									minutes: nat;					
 		public State = <Available> | <SoldOut> | <Closed>;
-	values
 		
 	instance variables
-		public title: String;
-		public category: String;
-		public state: State;
-		public dateStart: Date;
-		public dateEnd: Date;
-		public timeStart: Time;
-		public timeEnd: Time;
-		public description: String;
-		public price: real;
-		public city: String;
-		public address: String;
-		public totalTickets: nat;
-		public soldTickets: nat;
+	
+		-- Event's title
+		protected title: String;
+		
+		-- Event's category
+		protected category: String;
+		
+		-- Event's state
+		protected state: State;
+		
+		-- Event's starting date
+		protected dateStart: Date;
+		
+		-- Event's ending date
+		protected dateEnd: Date;
+		
+		-- Event's starting time
+		protected timeStart: Time;
+		
+		-- Event's ending time
+		protected timeEnd: Time;
+		
+		-- Event's description
+		protected description: String;
+		
+		-- Event's price
+		protected price: real;
+		
+		-- Event's city
+		protected city: String;
+		
+		-- Event's address
+		protected address: String;
+		
+		-- Event's total amount of tickets
+		protected totalTickets: nat;
+		
+		-- Event's amount of sold tickets
+		protected soldTickets: nat;
 		
 	operations
 	
-	functions
-	
-	traces
-	
+		-- Constructor
+		public Event : String ==> Event
+		Event(t) == (title := t ;);
+
 end Event

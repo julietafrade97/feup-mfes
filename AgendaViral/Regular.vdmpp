@@ -4,10 +4,10 @@ class Regular is subclass of User
 	values
 	
 	instance variables
-		protected firstName: seq of char;
-		protected lastName: seq of char;
-		protected balance: real;
-		protected nTicketsBought: nat;
+		private firstName: seq of char;
+		private lastName: seq of char;
+		private balance: real;
+		private nTicketsBought: nat;
 	
 	operations
 	
