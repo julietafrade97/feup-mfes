@@ -1,9 +1,11 @@
 # System Files
 *.DS_Store
-AgendaViral⁩/generated⁩/*
+\generated/
+\.metadata/
 
-generated/*
 bin/
 .idea/
 .overture
 *.iml
+
+!/generated/java/src/Agenda Viral/*.java
