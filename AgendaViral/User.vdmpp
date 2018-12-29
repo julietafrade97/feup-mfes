@@ -1,6 +1,5 @@
 class User
 	types
-	
 		public String = seq of char;
 		
 	instance variables
@@ -17,8 +16,8 @@ class User
 	operations
 	
 		-- Constructor
-		public User : String * String ==> User
-		User(mail, passw) == (email := mail ; password := passw ; return self;)
+		protected UserInit : String * String ==> ()
+		UserInit(mail, passw) == (email := mail ; password := passw ;)
 		pre len mail >= 5 and len passw >= 8
 		post email = mail and password = passw;
 		

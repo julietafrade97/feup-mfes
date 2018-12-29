@@ -1,0 +1,23 @@
+class Admin is subclass of User
+types
+
+values
+
+instance variables
+
+operations
+		-- Constructor
+		public Admin : String * String ==> Admin
+		Admin(mail, passw) == (
+			UserInit(mail, passw);
+			return self;
+		);
+		
+		public isAdmin: () ==> bool
+		isAdmin() == return true;
+
+functions
+
+traces
+
+end Admin

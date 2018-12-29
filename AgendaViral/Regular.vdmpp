@@ -1,15 +1,29 @@
 class Regular is subclass of User
 	types
+			public String = seq of char;
 	
 	values
 	
-	instance variables
-		private firstName: seq of char;
-		private lastName: seq of char;
-		private balance: real;
-		private nTicketsBought: nat;
-	
+	instance variables	
+		protected firstName: String;
+		protected lastName: String;
+		protected balance: real;
+		protected nTicketsBought: nat;
+		
 	operations
+		-- Constructor
+		public Regular : String * String * String * String * real * real ==> Regular
+		Regular(mail, passw, fName, lName, bal, nticks) == (
+			UserInit(mail, passw);
+			firstName := fName;
+			lastName := lName;
+			balance := bal;
+			nTicketsBought := nticks; 
+			return self;
+		);
+		
+		public isAdmin: () ==> bool
+		isAdmin() == return false;
 	
 	functions
 	

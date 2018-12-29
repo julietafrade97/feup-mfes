@@ -27,7 +27,7 @@ class Agenda
 			categories :=  {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
 			locations := {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"},
 										"Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"},
-										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousã"}};			
+										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousa"}};			
 			return self;
 		);
 		
