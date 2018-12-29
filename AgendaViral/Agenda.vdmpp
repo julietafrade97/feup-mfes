@@ -63,6 +63,26 @@ class Agenda
 		
 		-- *FIND EVENTS*
 		
+		-- find
+		public findEvent: String * String * String ==> set of Event
+		findEvent(city, district, category) == (
+			dcl foundEvents : set of Event := {};
+			dcl locationEvents : set of Event := {};
+			dcl categoryEvents :  set of Event := {};
+			
+			if(city <> "")
+			then locationEvents := findByCity(city)
+			elseif(district <> "")
+			then locationEvents := findByDistrict(district);
+			
+			if(category <> "")
+			then categoryEvents := findByCategory(category);
+			
+			foundEvents := locationEvents inter categoryEvents;
+			return foundEvents;	
+		)
+		pre loggedInUser <> nil and events <> {};
+		
 		-- by city
 		public findByCity: String ==> set of Event
 		findByCity(city) == (

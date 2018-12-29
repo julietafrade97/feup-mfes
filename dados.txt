@@ -5,10 +5,10 @@ print a.addUser(new Admin("julieta@gmail.com", "julieta12345"))
 
 print a.addEvent(new Event("Evento1", "Porto", {"Concertos"}))
 print a.addEvent(new Event("Evento2", "Vila Nova de Gaia", {"Concertos", "Literatura"}))
-print a.addEvent(new Event("Evento3", "Lisboa", {"Litereatura"}))
+print a.addEvent(new Event("Evento3", "Lisboa", {"Literatura"}))
 print a.addEvent(new Event("Evento4", "Amadora", {"Exposicoes"}))
-print a.addEvent(new Event("Evento5", "Maia", {"Desporto", "Natureza"}))
-print a.addEvent(new Event("Evento6", "Porto", {"Concertos"}))
+print a.addEvent(new Event("Evento5", "Maia", {"Exposicoes", "Natureza"}))
+print a.addEvent(new Event("Evento6", "Porto", {"Concertos", "Exposicoes"}))
 
 print a.findByCity ("Porto")
 print a.findByCity ("Maia")
@@ -17,6 +17,14 @@ print a.findByCity ("Coimbra")
 print a.findByDistrict ("Porto")
 print a.findByDistrict ("Lisboa")
 print a.findByDistrict ("Coimbra")
+
+print a.findByCategory ("Concertos")
+print a.findByCategory ("Literatura")
+print a.findByCategory ("Moda")
+
+print a.findEvent ("Porto", "", "Exposicoes")
+print a.findEvent ("", "Porto", "Concertos")
+print a.findEvent ("Lisboa", "", "Literatura")
 
 print a.login("sofia@gmail.com", "sofia12345")
 print a.login("julieta@gmail.com", "julieta12345")
