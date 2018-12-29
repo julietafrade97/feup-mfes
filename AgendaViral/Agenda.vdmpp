@@ -41,7 +41,7 @@ class Agenda
 		public addUser: User ==> ()
 		addUser(u) == users := users ++ {u.getEmail() |-> u};
 		
-		-- Logs the user in. Returns true if successful and updates the loggedInUser variable
+		-- Log the user in. Returns true if successful and updates the loggedInUser variable
 		public login: String * String ==> bool
 		login(email, password) == (
 			dcl user: User;
@@ -66,7 +66,8 @@ class Agenda
 		addEvent(event) == (
 			events := events union {event};
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCity(event.getCity()); -- TODO: categoria existe
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
+		post event in set events;
 		
 		-- *FIND EVENTS*
 		
@@ -119,7 +120,7 @@ class Agenda
 		findByCategory(category) == (
 			dcl categoryEvents : set of Event := {};
 			for all event in set events do (
-					if category in set event.getCategories()
+					if category = event.getCategory()
 					then categoryEvents := categoryEvents union {event}
 			);
 			return categoryEvents;
@@ -139,6 +140,8 @@ class Agenda
 		pre loggedInUser <> nil and events <> {};
 		
 		-- *AUX*
+		
+		-- Returns if city exists in the agenda's list of cities
 		public pure existsCity: String ==> bool
 		existsCity(city) == (
 			dcl citiesSet : set of set of String := rng locations;
@@ -150,6 +153,7 @@ class Agenda
 		)
 		pre locations <> {|->};
 		
+		-- Returns if district exists in the agenda's list of districts
 		public pure existsDistrict: String ==> bool
 		existsDistrict(district) == (
 			dcl districts : set of String := dom locations;
@@ -157,6 +161,7 @@ class Agenda
 		)
 		pre locations <> {|->};
 		
+		-- Returns if city exists in a certain district
 		public pure existsCityInDistrict: String * String ==> bool
 		existsCityInDistrict(city, district) == (
 			dcl districtCities : set of String := locations(district);
@@ -164,12 +169,14 @@ class Agenda
 		)
 		pre locations <> {|->};
 		
+		-- Returns if category exists in the agenda's list of categories
 		public pure existsCategory: String ==> bool
 		existsCategory(category) == (
 			return category in set categories;
 		)
 		pre categories <> {};
 		
+		-- Returns SOMETHING
 		public pure wantedDate: Event`Date * Event`Date * Event`Date ==> bool
 		wantedDate(date, dateStart,dateEnd) == (
 			return (dateStart.year <= date.year and date.year <= dateEnd.year) and (dateStart.month <= date.month and date.month <= dateEnd.month) and (dateStart.day <= date.day and date.day <= dateEnd.day)

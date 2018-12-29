@@ -59,6 +59,38 @@ class Event
 		pre len newTitle > 0
 		post title = newTitle; -- TODO: verificar datas
 		
+		-- Returns event's title
+		public pure getTitle: () ==> String
+		getTitle () == return title;
+		
+		-- Returns event's category
+		public pure getCategory: () ==> String
+		getCategory () == return category;
+		
+		-- Returns event's starting date
+		public pure getDateStart: () ==> Date
+		getDateStart () == return dateStart;
+		
+		-- Returns event's ending date
+		public pure getDateEnd: () ==> Date
+		getDateEnd () == return dateEnd;
+		
+		-- Returns event's description
+		public pure getDescription: () ==> String
+		getDescription () == return description;
+		
+		-- Returns event's price
+		public pure getPrice: () ==> real
+		getPrice () == return price;
+		
+		-- Returns event's total tickets
+		public pure getTotalTickets: () ==> nat1
+		getTotalTickets () == return totalTickets;
+		
+		-- Returns event's sold tickets
+		public pure getSoldTickets: () ==> nat
+		getSoldTickets () == return soldTickets;
+		
 		-- Returns event's city
 		public pure getCity: () ==> String
 		getCity () == return city;
