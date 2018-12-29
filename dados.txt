@@ -7,10 +7,27 @@ print a.findByCity ("Porto")
 print a.findByCity ("Maia")
 print a.findByCity ("Coimbra")
 
+print a.findByDistrict ("Porto")
+print a.findByDistrict ("Lisboa")
+print a.findByDistrict ("Coimbra")
+
+print a.findByCategory ("Concertos")
+print a.findByCategory ("Literatura")
+print a.findByCategory ("Moda")
+
+print a.findByDate (mk_Event`Date(5,1,2000))
+print a.findByDate (mk_Event`Date(6,1,2000))
+print a.findByDate (mk_Event`Date(2,3,2000))
+
+print a.findEvent ("Porto", "", "Exposicoes")
+print a.findEvent ("", "Porto", "Concertos")
+print a.findEvent ("Lisboa", "", "Literatura")
+
 print a.login("sofia@gmail.com", "sofia12345")
 print a.login("julieta@gmail.com", "julieta12345")
 
 print a.loggedInUser.isAdmin()
+
 
 print a.addEvent(new Event("Evento1", "Natureza", mk_Event`Date(20,02,2019), mk_Event`Date(21,02,2019), "Lorem ipsum.", 20.50, "Porto", 1000))
 

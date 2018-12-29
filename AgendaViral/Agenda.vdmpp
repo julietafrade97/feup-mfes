@@ -3,6 +3,7 @@ class Agenda
 		public String = seq of char;
 		public MultiMap = map String to set of String;	
 	
+
 	values
 	
 	instance variables
@@ -31,7 +32,8 @@ class Agenda
 			categories :=  {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
 			locations := {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"},
 										"Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"},
-										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousa"}};			
+										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousa"}};	
+					
 			return self;
 		);
 		
@@ -68,6 +70,26 @@ class Agenda
 		
 		-- *FIND EVENTS*
 		
+		-- find
+		public findEvent: String * String * String ==> set of Event
+		findEvent(city, district, category) == (
+			dcl foundEvents : set of Event := {};
+			dcl locationEvents : set of Event := {};
+			dcl categoryEvents :  set of Event := {};
+			
+			if(city <> "")
+			then locationEvents := findByCity(city)
+			elseif(district <> "")
+			then locationEvents := findByDistrict(district);
+			
+			if(category <> "")
+			then categoryEvents := findByCategory(category);
+			
+			foundEvents := locationEvents inter categoryEvents;
+			return foundEvents;	
+		)
+		pre loggedInUser <> nil and events <> {};
+		
 		-- by city
 		public findByCity: String ==> set of Event
 		findByCity(city) == (
@@ -78,13 +100,43 @@ class Agenda
 			);
 			return cityEvents;
 		)
-		pre existsCity(city) and events <> {};
+		pre loggedInUser <> nil and existsCity(city) and events <> {};
 	
 		-- by district
+		public findByDistrict: String ==> set of Event
+		findByDistrict(district) == (
+			dcl districtEvents : set of Event := {};
+			for all event in set events do (
+					if existsCityInDistrict(event.getCity(), district)
+					then districtEvents := districtEvents union {event}
+			);
+			return districtEvents;
+		)
+		pre loggedInUser <> nil and existsDistrict(district) and events <> {};
 		
 		-- by category
+		public findByCategory: String ==> set of Event
+		findByCategory(category) == (
+			dcl categoryEvents : set of Event := {};
+			for all event in set events do (
+					if category in set event.getCategories()
+					then categoryEvents := categoryEvents union {event}
+			);
+			return categoryEvents;
+		)
+		pre loggedInUser <> nil and existsCategory(category) and events <> {};
 		
 		-- by date
+		public findByDate: Event`Date ==> set of Event
+		findByDate(date) == (
+			dcl dateEvents : set of Event := {};
+			for all event in set events do (
+					if wantedDate(date, event.getDateStart(), event.getDateEnd())
+					then dateEvents := dateEvents union {event}
+			);
+			return dateEvents;
+		)
+		pre loggedInUser <> nil and events <> {};
 		
 		-- *AUX*
 		public pure existsCity: String ==> bool
@@ -105,8 +157,27 @@ class Agenda
 		)
 		pre locations <> {|->};
 		
+		public pure existsCityInDistrict: String * String ==> bool
+		existsCityInDistrict(city, district) == (
+			dcl districtCities : set of String := locations(district);
+			return city in set districtCities;
+		)
+		pre locations <> {|->};
+		
+		public pure existsCategory: String ==> bool
+		existsCategory(category) == (
+			return category in set categories;
+		)
+		pre categories <> {};
+		
+		public pure wantedDate: Event`Date * Event`Date * Event`Date ==> bool
+		wantedDate(date, dateStart,dateEnd) == (
+			return (dateStart.year <= date.year and date.year <= dateEnd.year) and (dateStart.month <= date.month and date.month <= dateEnd.month) and (dateStart.day <= date.day and date.day <= dateEnd.day)
+		)
+		
 	functions
-	
+		
+		
 	traces
 
 end Agenda
