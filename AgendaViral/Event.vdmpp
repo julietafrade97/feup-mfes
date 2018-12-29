@@ -2,12 +2,10 @@ class Event
 	types
 	
 		public String = seq of char;
-		public Date :: day : nat
-									month: nat
-									year : nat;
-		public Time :: hour : nat
-									minutes: nat;					
-		public State = <Available> | <SoldOut> | <Closed>;
+		public Date :: day : nat1
+									month: nat1
+									year : nat1;				
+		public State = <Available> | <SoldOut>;
 		
 	instance variables
 	
@@ -26,12 +24,6 @@ class Event
 		-- Event's ending date
 		protected dateEnd: Date;
 		
-		-- Event's starting time
-		protected timeStart: Time;
-		
-		-- Event's ending time
-		protected timeEnd: Time;
-		
 		-- Event's description
 		protected description: String;
 		
@@ -41,11 +33,8 @@ class Event
 		-- Event's city
 		protected city: String;
 		
-		-- Event's address
-		protected address: String;
-		
 		-- Event's total amount of tickets
-		protected totalTickets: nat;
+		protected totalTickets: nat1;
 		
 		-- Event's amount of sold tickets
 		protected soldTickets: nat;
@@ -53,10 +42,25 @@ class Event
 	operations
 	
 		-- Constructor
-		public Event : String * String ==> Event
-		Event(t, c) == (title := t; city := c; return self);
+		public Event: String * String * Date * Date * String * real * String * nat1 ==> Event
+		Event(newTitle, newCategory, newStart, newEnd, newDescription, newPrice, newCity, newTotal) == (
+			title := newTitle;
+			category := newCategory;
+			state := <Available>;
+			dateStart := newStart;
+			dateEnd := newEnd;
+			description := newDescription;
+			price := newPrice;
+			city := newCity;
+			totalTickets := newTotal;
+			soldTickets := 0;
+			return self;
+		)
+		pre len newTitle > 0
+		post title = newTitle; -- TODO: verificar datas
 		
-			-- Returns the event city
-		public pure getCity: () ==> seq of char getCity () == return city ;
+		-- Returns event's city
+		public pure getCity: () ==> String
+		getCity () == return city;
 
 end Event

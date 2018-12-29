@@ -14,7 +14,7 @@ operations
 		);
 		
 		-- Returns if user is admin
-		public isAdmin: () ==> bool
+		public pure isAdmin: () ==> bool
 		isAdmin() == return true;
 
 functions

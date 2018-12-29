@@ -26,7 +26,7 @@ class User
 		getEmail () == return email ;
 		
 		-- Returns if user is admin
-		public isAdmin: () ==> bool
+		public pure isAdmin: () ==> bool
 		isAdmin() == return false;
 		
 		-- Checks if the email and password combination matches
