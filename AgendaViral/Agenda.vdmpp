@@ -1,8 +1,7 @@
 class Agenda
 	types
 		public String = seq of char;
-		public MultiMap = map String to set of String
-	
+		public MultiMap = map String to set of String;	
 	values
 	
 	instance variables
@@ -120,6 +119,16 @@ class Agenda
 		pre loggedInUser <> nil and existsCategory(category) and events <> {};
 		
 		-- by date
+		public findByDate: Event`Date ==> set of Event
+		findByDate(date) == (
+			dcl dateEvents : set of Event := {};
+			for all event in set events do (
+					if wantedDate(date, event.getDateStart(), event.getDateEnd())
+					then dateEvents := dateEvents union {event}
+			);
+			return dateEvents;
+		)
+		pre loggedInUser <> nil and events <> {};
 		
 		-- *AUX*
 		public pure existsCity: String ==> bool
@@ -152,10 +161,15 @@ class Agenda
 			return category in set categories;
 		)
 		pre categories <> {};
-	
+		
+		public pure wantedDate: Event`Date * Event`Date * Event`Date ==> bool
+		wantedDate(date, dateStart,dateEnd) == (
+			return (dateStart.year <= date.year and date.year <= dateEnd.year) and (dateStart.month <= date.month and date.month <= dateEnd.month) and (dateStart.day <= date.day and date.day <= dateEnd.day)
+		)
 		
 	functions
-	
+		
+		
 	traces
 
 end Agenda
