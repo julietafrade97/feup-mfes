@@ -1,0 +1,10 @@
+class Tests
+	instance variables
+	
+	operations
+	
+		protected assertTrue: bool ==> ()
+		assertTrue(arg) == return 
+		pre arg;
+		
+end Tests

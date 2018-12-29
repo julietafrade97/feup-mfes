@@ -9,6 +9,11 @@ class Event
 		
 	instance variables
 	
+		public static eventId : int := 1;
+		
+		-- Event's id
+		public id : int := eventId;
+	
 		-- Event's title
 		protected title: String;
 		
@@ -44,6 +49,9 @@ class Event
 		-- Constructor
 		public Event: String * String * Date * Date * String * real * String * nat1 ==> Event
 		Event(newTitle, newCategory, newStart, newEnd, newDescription, newPrice, newCity, newTotal) == (
+			id := eventId;
+			eventId := eventId + 1;
+			
 			title := newTitle;
 			category := newCategory;
 			state := <Available>;
@@ -67,6 +75,10 @@ class Event
 		public pure getCategory: () ==> String
 		getCategory () == return category;
 		
+		-- Returns event's state
+		public pure getState: () ==> State
+		getState () == return state;
+		
 		-- Returns event's starting date
 		public pure getDateStart: () ==> Date
 		getDateStart () == return dateStart;
@@ -83,6 +95,10 @@ class Event
 		public pure getPrice: () ==> real
 		getPrice () == return price;
 		
+		-- Returns event's city
+		public pure getCity: () ==> String
+		getCity () == return city;
+		
 		-- Returns event's total tickets
 		public pure getTotalTickets: () ==> nat1
 		getTotalTickets () == return totalTickets;
@@ -90,9 +106,5 @@ class Event
 		-- Returns event's sold tickets
 		public pure getSoldTickets: () ==> nat
 		getSoldTickets () == return soldTickets;
-		
-		-- Returns event's city
-		public pure getCity: () ==> String
-		getCity () == return city;
 
 end Event
