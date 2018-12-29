@@ -13,6 +13,7 @@ operations
 			return self;
 		);
 		
+		-- Returns if user is admin
 		public isAdmin: () ==> bool
 		isAdmin() == return true;
 

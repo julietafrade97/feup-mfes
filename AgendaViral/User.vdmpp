@@ -17,11 +17,23 @@ class User
 	
 		-- Constructor
 		protected UserInit : String * String ==> ()
-		UserInit(mail, passw) == (email := mail ; password := passw ;)
-		pre len mail >= 5 and len passw >= 8
-		post email = mail and password = passw;
+		UserInit(m, p) == (email := m; password := p;)
+		pre len m >= 5 and len p >= 8
+		post email = m and password = p;
 		
 		-- Returns the user’s email
-		public pure getEmail: () ==> seq of char getEmail () == return email ;
+		public pure getEmail: () ==> String
+		getEmail () == return email ;
+		
+		-- Returns if user is admin
+		public isAdmin: () ==> bool
+		isAdmin() == return false;
+		
+		-- Checks if the email and password combination matches
+		public checkLogin: String * String ==> bool
+		checkLogin (m, p) == (
+			return email = m and password = p;
+		)
+		post RESULT = (email = m and password = p);
 
 end User

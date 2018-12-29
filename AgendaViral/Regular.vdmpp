@@ -5,23 +5,26 @@ class Regular is subclass of User
 	values
 	
 	instance variables	
-		protected firstName: String;
-		protected lastName: String;
-		protected balance: real;
-		protected nTicketsBought: nat;
+	
+		private firstName: String;
+		private lastName: String;
+		private balance: real;
+		private nTicketsBought: nat;
 		
 	operations
+	
 		-- Constructor
 		public Regular : String * String * String * String * real * real ==> Regular
-		Regular(mail, passw, fName, lName, bal, nticks) == (
-			UserInit(mail, passw);
+		Regular(m, p, fName, lName, b, nt) == (
+			UserInit(m, p);
 			firstName := fName;
 			lastName := lName;
-			balance := bal;
-			nTicketsBought := nticks; 
+			balance := b;
+			nTicketsBought := nt; 
 			return self;
 		);
 		
+		-- Returns if user is admin
 		public isAdmin: () ==> bool
 		isAdmin() == return false;
 	

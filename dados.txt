@@ -1,7 +1,7 @@
 create a:= new Agenda()
 
-print a.addUser(new Regular("sofia@gmail.com","sofia12345", "Sofia", "Silva", 123, 21))
-print a.addUser(new Admin("julieta@gmail.com","julieta12345"))
+print a.addUser(new Regular("sofia@gmail.com", "sofia12345", "Sofia", "Silva", 123, 21))
+print a.addUser(new Admin("julieta@gmail.com", "julieta12345"))
 
 print a.addEvent(new Event("Evento1", "Porto"))
 print a.addEvent(new Event("Evento2", "Vila Nova de Gaia"))
@@ -13,3 +13,8 @@ print a.addEvent(new Event("Evento6", "Porto"))
 print a.findByCity ("Porto")
 print a.findByCity ("Maia")
 print a.findByCity ("Coimbra")
+
+print a.login("sofia@gmail.com", "sofia12345")
+print a.login("julieta@gmail.com", "julieta12345")
+
+print a.loggedInUser.isAdmin()
