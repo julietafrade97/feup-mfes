@@ -55,5 +55,8 @@ class Event
 		-- Constructor
 		public Event : String * String ==> Event
 		Event(t, c) == (title := t; city := c; return self);
+		
+			-- Returns the event city
+		public pure getCity: () ==> seq of char getCity () == return city ;
 
 end Event

@@ -1,6 +1,5 @@
 class Agenda
 	types
-	
 		public String = seq of char;
 		public MultiMap = map String to set of String
 	
@@ -28,8 +27,7 @@ class Agenda
 			categories :=  {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
 			locations := {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"},
 										"Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"},
-										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousã"}};
-
+										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousã"}};			
 			return self;
 		);
 		
@@ -40,6 +38,45 @@ class Agenda
 		-- Add event
 		public addEvent: Event ==> ()
 		addEvent(e) == events := events union {e};
+		
+		-- *FIND EVENTS*
+		
+		-- by city
+		public findByCity: String ==> set of Event
+		findByCity(city) == (
+			dcl cityEvents : set of Event := {};
+			for all event in set events do (
+					if event.getCity() = city
+					then cityEvents := cityEvents union {event}
+			);
+			return cityEvents;
+		)
+		pre existsCity(city) and events <> {};
+	
+		-- by district
+		
+		-- by category
+		
+		-- by date
+		
+		-- *AUX*
+		public pure existsCity: String ==> bool
+		existsCity(city) == (
+			dcl citiesSet : set of set of String := rng locations;
+			dcl cities: set of String := {};
+			for all cs in set citiesSet do(
+				cities := cities union cs
+			);
+			return city in set cities;
+		)
+		pre locations <> {|->};
+		
+		public pure existsDistrict: String ==> bool
+		existsDistrict(district) == (
+			dcl districts : set of String := dom locations;
+			return district in set districts;
+		)
+		pre locations <> {|->};
 		
 	functions
 	
