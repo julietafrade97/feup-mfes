@@ -27,7 +27,8 @@ class Agenda
 			categories :=  {"Concertos", "Exposicoes", "Literatura", "Moda", "Desporto", "Natureza"};
 			locations := {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"},
 										"Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"},
-										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousa"}};			
+										"Coimbra" |-> {"Coimbra", "Cantanhede", "Figueira da Foz", "Lousa"}};	
+													
 			return self;
 		);
 		
@@ -54,6 +55,16 @@ class Agenda
 		pre existsCity(city) and events <> {};
 	
 		-- by district
+		public findByDistrict: String ==> set of Event
+		findByDistrict(district) == (
+			dcl districtEvents : set of Event := {};
+			for all event in set events do (
+					if existsCityInDistrict(event.getCity(), district)
+					then districtEvents := districtEvents union {event}
+			);
+			return districtEvents;
+		)
+		pre existsDistrict(district) and events <> {};
 		
 		-- by category
 		
@@ -75,6 +86,13 @@ class Agenda
 		existsDistrict(district) == (
 			dcl districts : set of String := dom locations;
 			return district in set districts;
+		)
+		pre locations <> {|->};
+		
+		public pure existsCityInDistrict: String * String ==> bool
+		existsCityInDistrict(city, district) == (
+			dcl districtCities : set of String := locations(district);
+			return city in set districtCities;
 		)
 		pre locations <> {|->};
 		

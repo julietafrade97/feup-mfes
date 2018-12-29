@@ -13,3 +13,7 @@ print a.addEvent(new Event("Evento6", "Porto"))
 print a.findByCity ("Porto")
 print a.findByCity ("Maia")
 print a.findByCity ("Coimbra")
+
+print a.findByDistrict ("Porto")
+print a.findByDistrict ("Lisboa")
+print a.findByDistrict ("Coimbra")
