@@ -78,31 +78,23 @@ class Agenda
 		pre event in set proposedEvents
 		post proposedEvents~ = proposedEvents union {event} and event not in set proposedEvents;
 		
-		-- Returns most popular events
-		public mostPopularEvents: () ==> set of Event
-		mostPopularEvents () == (
-			dcl topEvents: set of Event := {};
-			dcl temp: Event;
-			dcl value: real := 0;
-			dcl times: nat := 3; -- top 3
-			
-			while times > 0 do (
-				for all event in set events do (
-					if(event.getStats() > value and event not in set topEvents)
-					then (
-						value := event.getStats();
-						temp := event;
-					);
+		-- Returns most popular event
+		public mostPopularEvent: () ==> Event
+		mostPopularEvent () == (
+			dcl popularEvent: [Event] := nil;
+			dcl value: real := 0;	
+
+			for all event in set events do (
+				if(event.getStats() >= value)
+				then (
+					value := event.getStats();
+					popularEvent := event;
 				);
-				topEvents := topEvents union {temp};
-				value := 0;
-				times := times - 1;
 			);
-			
-			return topEvents;
+		
+			return popularEvent;
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
-		-- post topevents length ser igual a x
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
 		
 		-- *REGULAR USER ONLY*
 		
