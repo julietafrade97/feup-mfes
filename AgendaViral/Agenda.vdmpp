@@ -97,37 +97,30 @@ class Agenda
 		
 		-- *FIND EVENTS*
 		
-		-- Returns a set of events based on filters (excluding date)
-		public findEvents: String * String * String ==> set of Event
-		findEvents(city, district, category) == (
+		-- Returns a set of events based on filters
+		public findEvents: String * String * String * [Event`Date] ==> set of Event
+		findEvents(city, district, category, date) == (
 			dcl foundEvents : set of Event := {};
 			
-			if(city <> "")
-			then foundEvents := findByCity(city)
-			elseif(district <> "")
-			then foundEvents := findByDistrict(district);
+			if city <> ""
+				then foundEvents := findByCity(city)
+			elseif district <> ""
+				then foundEvents := findByDistrict(district);
 			
-			if(category <> "")
+			if category <> ""
 			then (
 				if city = "" and district = ""
 				then foundEvents := findByCategory(category)
 				else foundEvents := foundEvents inter findByCategory(category);
 			);
+			
+			if date <> nil
+			then (
+				if city = "" and district = "" and category = ""
+				then foundEvents := findByDate(date) 
+				else foundEvents := foundEvents inter findByDate(date);
+			);
 						
-			return foundEvents;	
-		)
-		pre loggedInUser <> nil and events <> {};
-		
-		-- Returns a set of events based on filters (includind date)
-		public findEvents: String * String * String * Event`Date ==> set of Event
-		findEvents(city, district, category, date) == (
-			dcl foundEvents : set of Event := findEvents(city,district,category);
-			dcl dateEvents : set of Event := {};
-			
-			if city = "" and district = "" and category = ""
-			then foundEvents := findByDate(date) 
-			else foundEvents := foundEvents inter findByDate(date);
-			
 			return foundEvents;	
 		)
 		pre loggedInUser <> nil and events <> {};
