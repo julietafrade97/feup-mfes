@@ -7,7 +7,7 @@ class EventTest is subclass of Tests
 		-- Creates an event and verifies the parameters
 		private testCreateEvent: () ==> ()
 		testCreateEvent() == (
-			dcl event : Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
+			dcl event: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
 			assertTrue(event.id = 1);
 			assertTrue(event.getTitle() = "Twenty One Pilots");
 			assertTrue(event.getCategory() = "Concertos");

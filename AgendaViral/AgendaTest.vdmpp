@@ -1,0 +1,71 @@
+class AgendaTest is subclass of Tests
+
+	instance variables
+		agenda: Agenda := new Agenda();
+		userAdmin: Admin := new Admin("julieta@gmail.com", "julieta12345");
+		user1: Regular := new Regular("sofia@gmail.com", "sofia12345", "Sofia", "Silva", 500, 30);
+		user2: Regular := new Regular("bibi@gmail.com", "bibi12345", "Beatriz", "Baldaia", 200, 5);
+		user3: Regular := new Regular("carlos@gmail.com", "carlos12345", "Carlos", "Freitas", 800, 10);
+		user4: Regular := new Regular("vicente@gmail.com", "vicente12345", "Vicente", "Espinha", 100, 50);
+		event1: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Twenty One Pilots, o aclamado duo norte-americano constituido por Tyler Joseph e Josh Dun. The Bandito Tour sera a digressão mundial de apresentacao do album, com a estreia da banda ao vivo em Portugal, dia 17 de Marco, na Altice Arena.", 42, "Lisboa", 20000);
+		event2: Event := new Event("EXO", "Concertos", mk_Event`Date(20,5,2019), mk_Event`Date(20,5,2019), "EXO e um grupo masculino sino-coreano de Seul. Estreia em Portugal dia 20 de Maio, na Altice Arena.", 30, "Lisboa", 20000);
+		event3: Event := new Event("Aberturas: Tom Emerson em conversa com o arquivo Alvaro Siza", "Exposicoes", mk_Event`Date(6,1,2019), mk_Event`Date(6,2,2019), "Visita orientada a exposicao por Matilde Seabra, educadora. Localizacao: Biblioteca de Serralves", 2.5, "Porto", 200);
+		event4: Event := new Event("Brunch Mercearia Bio", "Gastronomia", mk_Event`Date(5,1,2019), mk_Event`Date(5,1,2019), "Ir as compras e aproveitar para tomar um pequeno-almoco reforcado ou antecipar a hora do almoco e a proposta do nosso Brunch, servido entre as 11h e as 16h.", 7.8, "Portimao", 30);
+		event5: Event := new Event("Porto VS Belenenses", "Desporto", mk_Event`Date(30,1,2019), mk_Event`Date(30,1,2019), "Lorem ipsum.", 35, "Porto", 50000);
+		event6: Event := new Event("Leixoes VS Famalicao", "Desporto", mk_Event`Date(7,4,2019), mk_Event`Date(7,4,2019), "Lorem ipsum.", 12.5, "Matosinhos", 2000);
+		
+	operations
+	
+		-- Creates agenda and verifies the parameters
+		private testCreateAgenda: () ==> ()
+		testCreateAgenda() == (
+			dcl a: Agenda := new Agenda();
+			agenda.addUser(user1);
+			assertTrue(a.categories = {"Concertos", "Exposicoes", "Gastronomia", "Moda", "Desporto", "Natureza"});
+			assertTrue(a.locations = {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"}, "Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"}, "Faro" |-> {"Faro", "Albufeira", "Portimao"}});
+			assertTrue(a.loggedInUser = nil);
+		);
+		
+		private testAddUser: () ==> ()
+		testAddUser() == (
+			agenda.addUser(userAdmin);
+			agenda.addUser(user1);
+			agenda.addUser(user2);
+			agenda.addUser(user3);
+			agenda.addUser(user4);
+			assertTrue(agenda.users <> {|->});
+		);
+		
+		private testLogin: () ==> ()
+		testLogin() == (
+			-- fail
+		  dcl outcome: bool := agenda.login("person@gmail.com", "person12345");
+		  assertTrue(outcome = false);
+			assertTrue(agenda.loggedInUser = nil);
+			
+			-- success
+			outcome := agenda.login("julieta@gmail.com", "julieta12345");
+		  assertTrue(outcome = true);
+			assertTrue(agenda.loggedInUser <> nil);
+			assertTrue(agenda.loggedInUser = userAdmin);
+		);
+		
+		private testAddEvent: () ==> ()
+		testAddEvent() == (
+			agenda.addEvent(event1);
+			agenda.addEvent(event2);
+			agenda.addEvent(event3);
+			agenda.addEvent(event4);
+			agenda.addEvent(event5);
+			agenda.addEvent(event6);
+			assertTrue(agenda.events <> {});
+		);
+		
+		public test: () ==> ()
+		test() == (
+			testCreateAgenda();
+			testAddUser();
+			testLogin();
+			testAddEvent();
+		);
+end AgendaTest
