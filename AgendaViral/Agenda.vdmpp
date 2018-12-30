@@ -105,6 +105,24 @@ class Agenda
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
 		
+		-- Returns most profitable event
+		public mostProfitableEvent: () ==> Event
+		mostProfitableEvent () == (
+			dcl profitableEvent: [Event] := nil;
+			dcl value: real := 0;	
+
+			for all event in set events do (
+				if(event.getProfit() >= value)
+				then (
+					value := event.getProfit();
+					profitableEvent := event;
+				);
+			);
+		
+			return profitableEvent;
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
+		
 		-- Returns most active user
 		public mostActiveUser: () ==> User
 		mostActiveUser () == (

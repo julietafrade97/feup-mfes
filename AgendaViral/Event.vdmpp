@@ -126,6 +126,10 @@ class Event
 		public pure getStats: () ==> real
 		getStats () == return soldTickets * 100 / totalTickets;
 		
+		-- Returns event's total money raised
+		public pure getProfit: () ==> real
+		getProfit () == return soldTickets * price;
+		
 		-- Updates event's sold tickets and state if needed
 		public buy: nat ==> ()
 		buy (nTickets) == (
