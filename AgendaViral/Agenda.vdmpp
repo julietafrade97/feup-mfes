@@ -97,25 +97,41 @@ class Agenda
 		
 		-- *FIND EVENTS*
 		
-		-- Returns a set of events based on filters
-		public findEvent: String * String * String ==> set of Event
-		findEvent(city, district, category) == (
+		-- Returns a set of events based on filters (excluding date)
+		public findEvents: String * String * String ==> set of Event
+		findEvents(city, district, category) == (
 			dcl foundEvents : set of Event := {};
-			dcl locationEvents : set of Event := {};
-			dcl categoryEvents :  set of Event := {};
 			
 			if(city <> "")
-			then locationEvents := findByCity(city)
+			then foundEvents := findByCity(city)
 			elseif(district <> "")
-			then locationEvents := findByDistrict(district);
+			then foundEvents := findByDistrict(district);
 			
 			if(category <> "")
-			then categoryEvents := findByCategory(category);
-			
-			foundEvents := locationEvents inter categoryEvents;
+			then (
+				if city = "" and district = ""
+				then foundEvents := findByCategory(category)
+				else foundEvents := foundEvents inter findByCategory(category);
+			);
+						
 			return foundEvents;	
 		)
 		pre loggedInUser <> nil and events <> {};
+		
+		-- Returns a set of events based on filters (includind date)
+		public findEvents: String * String * String * Event`Date ==> set of Event
+		findEvents(city, district, category, date) == (
+			dcl foundEvents : set of Event := findEvents(city,district,category);
+			dcl dateEvents : set of Event := {};
+			
+			if city = "" and district = "" and category = ""
+			then foundEvents := findByDate(date) 
+			else foundEvents := foundEvents inter findByDate(date);
+			
+			return foundEvents;	
+		)
+		pre loggedInUser <> nil and events <> {};
+		
 		
 		-- by city
 		public findByCity: String ==> set of Event
@@ -202,10 +218,14 @@ class Agenda
 		)
 		pre categories <> {};
 		
-		-- Returns SOMETHING
+		-- Returns if date belongs to the interval [dateStart,dateEnd]
 		public pure wantedDate: Event`Date * Event`Date * Event`Date ==> bool
 		wantedDate(date, dateStart,dateEnd) == (
-			return (dateStart.year <= date.year and date.year <= dateEnd.year) and (dateStart.month <= date.month and date.month <= dateEnd.month) and (dateStart.day <= date.day and date.day <= dateEnd.day)
+			dcl natDateStart : nat := dateStart.year * 10000 + dateStart.month * 100 + dateStart.day;
+			dcl natDateEnd : nat := dateEnd.year * 10000 + dateEnd.month * 100 + dateEnd.day;
+			dcl natDate : nat := date.year * 10000 + date.month * 100 + date.day;
+			
+			return (natDateStart <= natDate) and (natDate <= natDateEnd);
 		);
 		
 	functions
