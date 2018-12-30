@@ -20,7 +20,6 @@ class AgendaTest is subclass of Tests
 		private testCreateAgenda: () ==> ()
 		testCreateAgenda() == (
 			dcl a: Agenda := new Agenda();
-			agenda.addUser(user1);
 			assertTrue(a.categories = {"Concertos", "Exposicoes", "Gastronomia", "Moda", "Desporto", "Natureza"});
 			assertTrue(a.locations = {"Porto" |-> {"Porto", "Matosinhos", "Maia", "Vila Nova de Gaia"}, "Lisboa" |-> {"Lisboa", "Amadora", "Cascais", "Sintra"}, "Faro" |-> {"Faro", "Albufeira", "Portimao"}});
 			assertTrue(a.loggedInUser = nil);
@@ -39,7 +38,7 @@ class AgendaTest is subclass of Tests
 		private testLogin: () ==> ()
 		testLogin() == (
 			-- fail
-		  dcl outcome: bool := agenda.login("person@gmail.com", "person12345");
+		  dcl outcome: bool := agenda.login("julieta@gmail.com", "person12345");
 		  assertTrue(outcome = false);
 			assertTrue(agenda.loggedInUser = nil);
 			
