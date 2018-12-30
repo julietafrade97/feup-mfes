@@ -1,0 +1,32 @@
+class UserTest is subclass of Tests
+
+	operations
+		
+		-- Creates a user: admin
+		private testCreateAdmin: () ==> ()
+		testCreateAdmin() == (
+			dcl user: User := new Admin("julieta@gmail.com", "julieta12345");
+			user.buyTickets(1, 1);
+			assertTrue(user.getEmail() = "julieta@gmail.com");
+			assertTrue(user.isAdmin() = true);
+			assertTrue(user.checkLogin("julieta@gmail.com", "julieta12345") = true);
+			assertTrue(user.getTicketsBought() = 0);
+		);
+		
+		-- Creates a user: regular
+		private testCreateRegular: () ==> ()
+		testCreateRegular() == (
+			dcl user: User := new Regular("sofia@gmail.com", "sofia12345", "Sofia", "Silva", 500, 30);
+			assertTrue(user.getEmail() = "sofia@gmail.com");
+			assertTrue(user.isAdmin() = false);
+			assertTrue(user.checkLogin("sofia@gmail.com", "sofia12345") = true);
+			assertTrue(user.getTicketsBought() = 30);
+		);
+		
+		public test: () ==> ()
+		test() == (
+			testCreateAdmin();
+			testCreateRegular();
+		);
+	
+end UserTest

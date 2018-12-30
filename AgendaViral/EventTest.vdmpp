@@ -1,6 +1,4 @@
 class EventTest is subclass of Tests
-
-	instance variables
 		
 	operations
 	
