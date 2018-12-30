@@ -6,7 +6,7 @@ class EventTest is subclass of Tests
 		private testCreateEvent: () ==> ()
 		testCreateEvent() == (
 			dcl event: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
-			assertTrue(event.id = 1);
+			assertTrue(event.getID() = 1);
 			assertTrue(event.getTitle() = "Twenty One Pilots");
 			assertTrue(event.getCategory() = "Concertos");
 			assertTrue(event.getState() = <Available>);
@@ -19,18 +19,9 @@ class EventTest is subclass of Tests
 			assertTrue(event.getSoldTickets() = 0);
 		);
 		
-		-- Creates an event and checks the statistics
-		private testEventStats: () ==> ()
-		testEventStats() == (
-			dcl event : Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
-			--event.setSoldTickets(80);
-			assertTrue(event.getStats() = 80);
-		);
-		
 		public test: () ==> ()
 		test() == (
 			testCreateEvent();
-			testEventStats();
 		);
 		
 end EventTest

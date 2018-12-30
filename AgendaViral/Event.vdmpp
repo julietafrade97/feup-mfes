@@ -19,40 +19,40 @@ class Event
 		
 	instance variables
 	
-		public static eventId : nat := 1;
+		private static eventId : nat := 1;
 		
 		-- Event's id
-		public id : nat;
+		private id : nat;
 	
 		-- Event's title
-		protected title: String;
+		private title: String;
 		
 		-- Event's category
-		protected category: String;
+		private category: String;
 		
 		-- Event's state
-		protected state: State;
+		private state: State;
 		
 		-- Event's starting date
-		protected dateStart: Date;
+		private dateStart: Date;
 		
 		-- Event's ending date
-		protected dateEnd: Date;
+		private dateEnd: Date;
 		
 		-- Event's description
-		protected description: String;
+		private description: String;
 		
 		-- Event's price
-		protected price: real;
+		private price: real;
 		
 		-- Event's city
-		protected city: String;
+		private city: String;
 		
 		-- Event's total amount of tickets
-		protected totalTickets: nat1;
+		private totalTickets: nat1;
 		
 		-- Event's amount of sold tickets
-		protected soldTickets: nat;
+		private soldTickets: nat;
 		
 	operations
 	
@@ -76,15 +76,15 @@ class Event
 			return self;
 		)
 		pre len newTitle > 0
-		post title = newTitle; -- TODO: verificar datas
-		
-		-- Returns event's title
-		public pure getTitle: () ==> String
-		getTitle () == return title;
+		post title = newTitle;
 		
 		-- Returns event's id
 		public pure getID: () ==> nat
 		getID () == return id;
+		
+		-- Returns event's title
+		public pure getTitle: () ==> String
+		getTitle () == return title;
 		
 		-- Returns event's category
 		public pure getCategory: () ==> String
