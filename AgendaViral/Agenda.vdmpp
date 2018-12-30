@@ -72,11 +72,20 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
 		post event in set events; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
 		
-		-- Removes event to sugested events
-		public removeProposedEvent: Event ==> ()
-		removeProposedEvent(event) == proposedEvents := proposedEvents \ {event}
-		pre event in set proposedEvents
-		post proposedEvents~ = proposedEvents union {event} and event not in set proposedEvents;
+		-- Removes event from Agenda's list of proposed events
+		public rejectProposedEvent: Event ==> ()
+		rejectProposedEvent(event) == proposedEvents := proposedEvents \ {event}
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents
+		post event not in set proposedEvents;
+		
+		-- Adds event to Agenda's list of events and removes from Agenda's list of proposed events
+		public acceptProposedEvent: Event ==> ()
+		acceptProposedEvent(event) == (
+			events := events union {event};
+			proposedEvents := proposedEvents \ {event};
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents and event not in set events
+		post event not in set proposedEvents and event in set events;
 		
 		-- Returns most popular event
 		public mostPopularEvent: () ==> Event
