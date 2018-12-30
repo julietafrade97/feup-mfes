@@ -24,6 +24,9 @@ class Agenda
 		public loggedInUser: [User] := nil;
 		-- TODO: depois por a private
 		
+		-- Agenda's list of proposed events waiting for admin's approval
+		public proposedEvents: set of Event := {}; 
+		
 	operations
 		
 		-- Constructor
@@ -67,7 +70,13 @@ class Agenda
 			events := events union {event};
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
-		post event in set events;
+		post event in set events; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
+		
+		-- Removes event to sugested events
+		public removeProposedEvent: Event ==> ()
+		removeProposedEvent(event) == proposedEvents := proposedEvents \ {event}
+		pre event in set proposedEvents
+		post proposedEvents~ = proposedEvents union {event} and event not in set proposedEvents;
 		
 		-- Returns most popular events
 		public mostPopularEvents: () ==> set of Event
@@ -94,6 +103,20 @@ class Agenda
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
 		-- post topevents length ser igual a x
+		
+		-- *REGULAR USER ONLY*
+		
+		-- Adds event to Agenda's list of proposed event
+		public proposeEvent: Event ==> ()
+		proposeEvent(event) == (
+		dcl allUsers: set of User := rng users;
+			for all user in set allUsers do (
+				if(user.isAdmin() = true)
+				then proposedEvents := proposedEvents union {event}
+			);
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity())
+		post event in set proposedEvents; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
 		
 		-- *FIND EVENTS*
 		
@@ -206,9 +229,7 @@ class Agenda
 		
 		-- Returns if category exists in the agenda's list of categories
 		public pure existsCategory: String ==> bool
-		existsCategory(category) == (
-			return category in set categories;
-		)
+		existsCategory(category) == return category in set categories
 		pre categories <> {};
 		
 		-- Returns if date belongs to the interval [dateStart,dateEnd]
@@ -220,6 +241,18 @@ class Agenda
 			
 			return (natDateStart <= natDate) and (natDate <= natDateEnd);
 		);
+		
+		-- Returns if user admin exists in the agenda's list of users
+		public pure existsAdmin: () ==> bool
+		existsAdmin() == (
+			dcl allUsers: set of User := rng users;
+			for all user in set allUsers do (
+				if(user.isAdmin() = true)
+				then return true;
+			);
+			return false;
+		)
+		pre users <> {|->};
 		
 	functions
 		
