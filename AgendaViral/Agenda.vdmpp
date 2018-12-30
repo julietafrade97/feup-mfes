@@ -125,7 +125,6 @@ class Agenda
 		)
 		pre loggedInUser <> nil and events <> {};
 		
-		
 		-- by city
 		public findByCity: String ==> set of Event
 		findByCity(city) == (

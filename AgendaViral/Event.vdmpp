@@ -2,9 +2,17 @@ class Event
 
 	types
 		public String = seq of char;
+		
+		-- Represents a date
 		public Date :: day : nat1
 									month: nat1
-									year : nat1;				
+									year : nat1
+		-- Ensures a valid date													
+		inv date == if date.year mod 400 = 0 or (date.year mod 100 <> 0 and date.year mod 4 <> 0)
+								then date.month <= 12 and date.day <= [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31](date.month)
+								else date.month <= 12 and date.day <= [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31](date.month);
+		
+		-- Represents the event's state							
 		public State = <Available> | <SoldOut>;
 		
 	instance variables
