@@ -1,9 +1,9 @@
 class Agenda
+
 	types
 		public String = seq of char;
 		public MultiMap = map String to set of String;	
 	
-
 	values
 	
 	instance variables
@@ -37,11 +37,11 @@ class Agenda
 			return self;
 		);
 		
-		-- Add user
+		-- Adds user to Agenda's list of users
 		public addUser: User ==> ()
 		addUser(u) == users := users ++ {u.getEmail() |-> u};
 		
-		-- Log the user in. Returns true if successful and updates the loggedInUser variable
+		-- Logs the user in. Returns true if successful and updates the loggedInUser variable
 		public login: String * String ==> bool
 		login(email, password) == (
 			dcl user: User;
@@ -61,7 +61,7 @@ class Agenda
 		
 		-- *ADMINISTRATOR ONLY*
 
-		-- Add event
+		-- Adds event to Agenda's list of events
 		public addEvent: Event ==> ()
 		addEvent(event) == (
 			events := events union {event};
@@ -69,12 +69,12 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
 		post event in set events;
 		
-		-- Most popular events
+		-- Returns most popular events
 		public mostPopularEvents: () ==> set of Event
 		mostPopularEvents () == (
 			dcl topEvents: set of Event := {};
 			dcl temp: Event;
-			dcl value: nat := 0;
+			dcl value: real := 0;
 			dcl times: nat := 3; -- top 3
 			
 			while times > 0 do (
@@ -93,10 +93,11 @@ class Agenda
 			return topEvents;
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
+		-- post topevents length ser igual a x
 		
 		-- *FIND EVENTS*
 		
-		-- find
+		-- Returns a set of events based on filters
 		public findEvent: String * String * String ==> set of Event
 		findEvent(city, district, category) == (
 			dcl foundEvents : set of Event := {};

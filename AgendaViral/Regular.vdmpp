@@ -1,4 +1,5 @@
 class Regular is subclass of User
+
 	types
 			public String = seq of char;
 	

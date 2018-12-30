@@ -7,7 +7,7 @@ class EventTest is subclass of Tests
 		-- Creates an event and verifies the parameters
 		private testCreateEvent: () ==> ()
 		testCreateEvent() == (
-			dcl event : Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 20000);
+			dcl event : Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
 			assertTrue(event.id = 1);
 			assertTrue(event.getTitle() = "Twenty One Pilots");
 			assertTrue(event.getCategory() = "Concertos");
@@ -17,13 +17,22 @@ class EventTest is subclass of Tests
 			assertTrue(event.getDescription() = "Lorem ipsum dolor sit amet.");
 			assertTrue(event.getPrice() = 42);
 			assertTrue(event.getCity() = "Lisboa");
-			assertTrue(event.getTotalTickets() = 20000);
+			assertTrue(event.getTotalTickets() = 100);
 			assertTrue(event.getSoldTickets() = 0);
 		);
 		
-		public static main: () ==> ()
-		main() == (
-			new EventTest().testCreateEvent();
+		-- Creates an event and checks the statistics
+		private testEventStats: () ==> ()
+		testEventStats() == (
+			dcl event : Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
+			event.setSoldTickets(80);
+			assertTrue(event.getStats() = 80);
+		);
+		
+		public test: () ==> ()
+		test() == (
+			testCreateEvent();
+			testEventStats();
 		);
 		
 end EventTest

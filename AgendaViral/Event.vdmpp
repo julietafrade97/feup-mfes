@@ -1,6 +1,6 @@
 class Event
+
 	types
-	
 		public String = seq of char;
 		public Date :: day : nat1
 									month: nat1
@@ -109,7 +109,7 @@ class Event
 		getSoldTickets () == return soldTickets;
 		
 		-- Returns event's percentage of tickets sold
-		public pure getStats: () ==> nat
+		public pure getStats: () ==> real
 		getStats () == return soldTickets * 100 / totalTickets;
 		
 		-- Updates event's sold tickets
