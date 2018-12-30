@@ -38,5 +38,8 @@ class User
 			return email = m and password = p;
 		)
 		post RESULT = (email = m and password = p);
+		
+		public buyTickets: nat1 * real ==> ()
+			buyTickets(nTickets, priceTicket) == (return;);
 
 end User

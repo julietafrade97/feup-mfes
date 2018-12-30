@@ -28,6 +28,15 @@ class Regular is subclass of User
 		-- Returns if user is admin
 		public pure isAdmin: () ==> bool
 		isAdmin() == return false;
+		
+		-- Returns if user could buy the tickets
+		public buyTickets: nat1 * real ==> ()
+		buyTickets(nTickets, priceTicket) == (
+			balance := balance - (nTickets * priceTicket);
+			nTicketsBought := nTicketsBought + nTickets
+		)
+		pre balance >= nTickets * priceTicket
+		post balance = balance~ - (nTickets * priceTicket);
 	
 	functions
 	

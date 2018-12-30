@@ -17,10 +17,10 @@ class Event
 		
 	instance variables
 	
-		public static eventId : int := 1;
+		public static eventId : nat := 1;
 		
 		-- Event's id
-		public id : int := eventId;
+		public id : nat;
 	
 		-- Event's title
 		protected title: String;
@@ -80,6 +80,10 @@ class Event
 		public pure getTitle: () ==> String
 		getTitle () == return title;
 		
+		-- Returns event's id
+		public pure getID: () ==> nat
+		getID () == return id;
+		
 		-- Returns event's category
 		public pure getCategory: () ==> String
 		getCategory () == return category;
@@ -123,5 +127,12 @@ class Event
 		-- Updates event's sold tickets
 		public setSoldTickets: nat ==> ()
 		setSoldTickets (nr) == soldTickets := nr;
+		
+		-- Updates event's sold tickets
+		public buy: nat ==> ()
+		buy (nTickets) == 
+			soldTickets := soldTickets + nTickets
+		pre totalTickets >= soldTickets + nTickets
+		post soldTickets = soldTickets~ + nTickets;
 
 end Event

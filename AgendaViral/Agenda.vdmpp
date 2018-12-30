@@ -95,6 +95,27 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
 		-- post topevents length ser igual a x
 		
+		-- *REGULAR ONLY*
+		public buyTicket: nat * nat ==> bool
+		buyTicket(eventID, nTickets) == (
+			dcl eventBought : Event;
+						
+			for all event in set events do (
+					if event.getID() = eventID
+					then eventBought := event;
+			);
+			
+			if eventBought.getTotalTickets() >= eventBought.getSoldTickets() + nTickets
+			then (
+				loggedInUser.buyTickets(nTickets, eventBought.getPrice());
+				eventBought.buy(nTickets);
+				return true;
+			)
+			else return false
+		)
+		pre loggedInUser <> nil and not loggedInUser.isAdmin()
+		post RESULT = true;
+		
 		-- *FIND EVENTS*
 		
 		-- Returns a set of events based on filters

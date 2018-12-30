@@ -18,6 +18,9 @@ class Admin is subclass of User
 		-- Returns if user is admin
 		public pure isAdmin: () ==> bool
 		isAdmin() == return true;
+		
+		public buyTickets: nat1 * real ==> ()
+		buyTickets(nTickets, priceTicket) == (return;);
 	
 	functions
 	
