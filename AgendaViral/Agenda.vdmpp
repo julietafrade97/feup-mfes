@@ -69,6 +69,31 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
 		post event in set events;
 		
+		-- Most popular events
+		public mostPopularEvents: () ==> set of Event
+		mostPopularEvents () == (
+			dcl topEvents: set of Event := {};
+			dcl temp: Event;
+			dcl value: nat := 0;
+			dcl times: nat := 3; -- top 3
+			
+			while times > 0 do (
+				for all event in set events do (
+					if(event.getStats() > value and event not in set topEvents)
+					then (
+						value := event.getStats();
+						temp := event;
+					);
+				);
+				topEvents := topEvents union {temp};
+				value := 0;
+				times := times - 1;
+			);
+			
+			return topEvents;
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
+		
 		-- *FIND EVENTS*
 		
 		-- find
@@ -180,7 +205,7 @@ class Agenda
 		public pure wantedDate: Event`Date * Event`Date * Event`Date ==> bool
 		wantedDate(date, dateStart,dateEnd) == (
 			return (dateStart.year <= date.year and date.year <= dateEnd.year) and (dateStart.month <= date.month and date.month <= dateEnd.month) and (dateStart.day <= date.day and date.day <= dateEnd.day)
-		)
+		);
 		
 	functions
 		
