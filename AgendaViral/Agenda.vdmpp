@@ -69,8 +69,9 @@ class Agenda
 		addEvent(event) == (
 			events := events union {event};
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
-		post event in set events; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
+		post event in set events; 
+		
 		
 		-- Removes event from Agenda's list of proposed events
 		public rejectProposedEvent: Event ==> ()
@@ -116,8 +117,8 @@ class Agenda
 				then proposedEvents := proposedEvents union {event}
 			);
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity())
-		post event in set proposedEvents; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
+		post event in set proposedEvents; 
 		
 		-- *REGULAR ONLY*
 		public buyTicket: nat * nat ==> bool
@@ -219,6 +220,20 @@ class Agenda
 		pre loggedInUser <> nil and events <> {};
 		
 		-- *AUX*
+		
+		-- Returns if events exists in the agenda's list of events
+		public pure existsEvent: Event ==> bool
+		existsEvent(event) == (
+			for all e in set events do(
+				if (event.getTitle() = e.getTitle() and
+						event.getCategory() = e.getCategory() and
+						event.getDateStart() = e.getDateStart() and
+						event.getDateEnd() = e.getDateEnd() and
+						event.getCity() = e.getCity())
+				then return true
+			);
+			return false;
+		);
 		
 		-- Returns if city exists in the agenda's list of cities
 		public pure existsCity: String ==> bool
