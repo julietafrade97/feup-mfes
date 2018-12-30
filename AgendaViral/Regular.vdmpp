@@ -28,6 +28,10 @@ class Regular is subclass of User
 		public pure isAdmin: () ==> bool
 		isAdmin() == return false;
 		
+		-- Returns number of bought tickets
+		public pure getTicketsBought: () ==> nat
+		getTicketsBought() == return nTicketsBought;
+		
 		-- Returns if user could buy the tickets
 		public buyTickets: nat1 * real ==> ()
 		buyTickets(nTickets, priceTicket) == (

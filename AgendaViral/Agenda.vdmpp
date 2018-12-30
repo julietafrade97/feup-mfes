@@ -41,7 +41,9 @@ class Agenda
 		
 		-- Adds user to Agenda's list of users
 		public addUser: User ==> ()
-		addUser(u) == users := users ++ {u.getEmail() |-> u};
+		addUser(user) == users := users ++ {user.getEmail() |-> user}
+		pre user.getEmail() not in set dom users
+		post user.getEmail() in set dom users;
 		
 		-- Logs the user in. Returns true if successful and updates the loggedInUser variable
 		public login: String * String ==> bool
@@ -103,6 +105,25 @@ class Agenda
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
 		
+		-- Returns most active user
+		public mostActiveUser: () ==> User
+		mostActiveUser () == (
+			dcl allUsers: set of User := rng users;
+			dcl activeUser: [User] := nil;
+			dcl value: nat := 0;	
+
+			for all user in set allUsers do (
+				if(user.getTicketsBought() >= value)
+				then (
+					value := user.getTicketsBought();
+					activeUser := user;
+				);
+			);
+		
+			return activeUser;
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and users <> {|->};
+		
 		-- *REGULAR USER ONLY*
 		
 		-- Adds event to Agenda's list of proposed event
@@ -117,7 +138,7 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set proposedEvents; 
 		
-		-- *REGULAR ONLY*
+		-- COMMENT
 		public buyTicket: nat * nat ==> bool
 		buyTicket(eventID, nTickets) == (
 			dcl eventBought : Event;

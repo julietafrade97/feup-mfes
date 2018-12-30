@@ -42,5 +42,9 @@ class User
 		-- COMMENT
 		public buyTickets: nat1 * real ==> ()
 		buyTickets(nTickets, priceTicket) == is subclass responsibility;
+		
+		-- Returns number of bought tickets
+		public pure getTicketsBought: () ==> nat
+		getTicketsBought() == is subclass responsibility;
 
 end User
