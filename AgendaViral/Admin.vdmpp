@@ -1,10 +1,4 @@
 class Admin is subclass of User
-
-	types
-	
-	values
-	
-	instance variables
 	
 	operations
 	
@@ -20,10 +14,6 @@ class Admin is subclass of User
 		isAdmin() == return true;
 		
 		public buyTickets: nat1 * real ==> ()
-		buyTickets(nTickets, priceTicket) == (return;);
-	
-	functions
-	
-	traces
+		buyTickets(nTickets, priceTicket) == return;
 
 end Admin

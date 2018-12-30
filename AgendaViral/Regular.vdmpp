@@ -1,9 +1,8 @@
 class Regular is subclass of User
 
 	types
-			public String = seq of char;
 	
-	values
+			public String = seq of char;
 	
 	instance variables	
 	
@@ -37,9 +36,5 @@ class Regular is subclass of User
 		)
 		pre balance >= nTickets * priceTicket
 		post balance = balance~ - (nTickets * priceTicket);
-	
-	functions
-	
-	traces
 
 end Regular

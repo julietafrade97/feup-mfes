@@ -1,10 +1,9 @@
 class Agenda
 
 	types
+	
 		public String = seq of char;
 		public MultiMap = map String to set of String;	
-	
-	values
 	
 	instance variables
 	
@@ -47,19 +46,17 @@ class Agenda
 		-- Logs the user in. Returns true if successful and updates the loggedInUser variable
 		public login: String * String ==> bool
 		login(email, password) == (
-			dcl user: User;
+			dcl user: User := users(email);
 			
-			if (len email < 5 or len password < 8) then return false ; -- email and password not valid
-			
-			if (email in set dom users) then ( -- verifies if user exists
-				user := users(email);
-				if user.checkLogin(email, password) then ( -- verifies if password matches to email
+			-- verifies if password matches to email
+			if user.checkLogin(email, password)
+			then (
 					loggedInUser := user;
 					return true;
-				);
 			);
 			return false;
 		)
+		pre email in set dom users and len password > 8
 		post (RESULT = true and loggedInUser <> nil) or RESULT = false;
 		
 		-- *ADMINISTRATOR ONLY*
@@ -289,10 +286,5 @@ class Agenda
 			return false;
 		)
 		pre users <> {|->};
-		
-	functions
-		
-		
-	traces
 
 end Agenda
