@@ -126,15 +126,14 @@ class Event
 		public pure getStats: () ==> real
 		getStats () == return soldTickets * 100 / totalTickets;
 		
-		-- Updates event's sold tickets
-		public setSoldTickets: nat ==> ()
-		setSoldTickets (nr) == soldTickets := nr;
-		
-		-- Updates event's sold tickets
+		-- Updates event's sold tickets and state if needed
 		public buy: nat ==> ()
-		buy (nTickets) == 
-			soldTickets := soldTickets + nTickets
-		pre totalTickets >= soldTickets + nTickets
+		buy (nTickets) == (
+			soldTickets := soldTickets + nTickets;
+			if(soldTickets = totalTickets)
+			then state := <SoldOut>;
+		)
+		pre totalTickets >= soldTickets + nTickets and state = <Available>
 		post soldTickets = soldTickets~ + nTickets;
 
 end Event
