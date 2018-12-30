@@ -24,6 +24,9 @@ class Agenda
 		public loggedInUser: [User] := nil;
 		-- TODO: depois por a private
 		
+		-- Agenda's list of proposed events waiting for admin's approval
+		public proposedEvents: set of Event := {}; 
+		
 	operations
 		
 		-- Constructor
@@ -67,33 +70,54 @@ class Agenda
 			events := events union {event};
 		)
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity())
-		post event in set events;
+		post event in set events; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
 		
-		-- Returns most popular events
-		public mostPopularEvents: () ==> set of Event
-		mostPopularEvents () == (
-			dcl topEvents: set of Event := {};
-			dcl temp: Event;
-			dcl value: real := 0;
-			dcl times: nat := 3; -- top 3
-			
-			while times > 0 do (
-				for all event in set events do (
-					if(event.getStats() > value and event not in set topEvents)
-					then (
-						value := event.getStats();
-						temp := event;
-					);
-				);
-				topEvents := topEvents union {temp};
-				value := 0;
-				times := times - 1;
-			);
-			
-			return topEvents;
+		-- Removes event from Agenda's list of proposed events
+		public rejectProposedEvent: Event ==> ()
+		rejectProposedEvent(event) == proposedEvents := proposedEvents \ {event}
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents
+		post event not in set proposedEvents;
+		
+		-- Adds event to Agenda's list of events and removes from Agenda's list of proposed events
+		public acceptProposedEvent: Event ==> ()
+		acceptProposedEvent(event) == (
+			events := events union {event};
+			proposedEvents := proposedEvents \ {event};
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true; -- TODO: se nao tiver pelo menos 3 eventos
-		-- post topevents length ser igual a x
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents and event not in set events
+		post event not in set proposedEvents and event in set events;
+		
+		-- Returns most popular event
+		public mostPopularEvent: () ==> Event
+		mostPopularEvent () == (
+			dcl popularEvent: [Event] := nil;
+			dcl value: real := 0;	
+
+			for all event in set events do (
+				if(event.getStats() >= value)
+				then (
+					value := event.getStats();
+					popularEvent := event;
+				);
+			);
+		
+			return popularEvent;
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
+		
+		-- *REGULAR USER ONLY*
+		
+		-- Adds event to Agenda's list of proposed event
+		public proposeEvent: Event ==> ()
+		proposeEvent(event) == (
+		dcl allUsers: set of User := rng users;
+			for all user in set allUsers do (
+				if(user.isAdmin() = true)
+				then proposedEvents := proposedEvents union {event}
+			);
+		)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity())
+		post event in set proposedEvents; -- TODO: pre evento nao pode existir com mesmo nome, cidade, categoria e datas!
 		
 		-- *REGULAR ONLY*
 		public buyTicket: nat * nat ==> bool
@@ -226,9 +250,7 @@ class Agenda
 		
 		-- Returns if category exists in the agenda's list of categories
 		public pure existsCategory: String ==> bool
-		existsCategory(category) == (
-			return category in set categories;
-		)
+		existsCategory(category) == return category in set categories
 		pre categories <> {};
 		
 		-- Returns if date belongs to the interval [dateStart,dateEnd]
@@ -240,6 +262,18 @@ class Agenda
 			
 			return (natDateStart <= natDate) and (natDate <= natDateEnd);
 		);
+		
+		-- Returns if user admin exists in the agenda's list of users
+		public pure existsAdmin: () ==> bool
+		existsAdmin() == (
+			dcl allUsers: set of User := rng users;
+			for all user in set allUsers do (
+				if(user.isAdmin() = true)
+				then return true;
+			);
+			return false;
+		)
+		pre users <> {|->};
 		
 	functions
 		
