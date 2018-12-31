@@ -203,7 +203,13 @@ class Agenda
 						
 			return foundEvents;	
 		)
-		pre loggedInUser <> nil and events <> {};
+		pre loggedInUser <> nil and events <> {} and 
+				not (city <> "" and district <> "") and 
+				not (city = "" and district = "" and category = "" and date = nil)
+		post if city <> "" then forall e in set RESULT & e.getCity() = city else true and
+				 if district <> "" then forall e in set RESULT & existsCityInDistrict(e.getCity(), district) else true and
+				 if category <> "" then forall e in set RESULT & e.getCategory() = category else true  and
+				 if date <> nil then forall e in set RESULT & wantedDate(date, e.getDateStart(), e.getDateEnd()) else true;
 		
 		-- by city
 		public findByCity: String ==> set of Event
@@ -215,8 +221,9 @@ class Agenda
 			);
 			return cityEvents;
 		)
-		pre loggedInUser <> nil and existsCity(city) and events <> {};
-	
+		pre loggedInUser <> nil and existsCity(city) and events <> {}
+		post forall e in set RESULT & e.getCity() = city;
+		
 		-- by district
 		public findByDistrict: String ==> set of Event
 		findByDistrict(district) == (
@@ -227,7 +234,9 @@ class Agenda
 			);
 			return districtEvents;
 		)
-		pre loggedInUser <> nil and existsDistrict(district) and events <> {};
+		pre loggedInUser <> nil and existsDistrict(district) and events <> {}
+		post forall e in set RESULT & existsCityInDistrict(e.getCity(), district);
+		
 		
 		-- by category
 		public findByCategory: String ==> set of Event
@@ -239,8 +248,9 @@ class Agenda
 			);
 			return categoryEvents;
 		)
-		pre loggedInUser <> nil and existsCategory(category) and events <> {};
-		
+		pre loggedInUser <> nil and existsCategory(category) and events <> {}
+		post forall e in set RESULT & e.getCategory() = category;
+	
 		-- by date
 		public findByDate: Event`Date ==> set of Event
 		findByDate(date) == (
@@ -251,7 +261,8 @@ class Agenda
 			);
 			return dateEvents;
 		)
-		pre loggedInUser <> nil and events <> {};
+		pre loggedInUser <> nil and events <> {}
+		post forall e in set RESULT & wantedDate(date, e.getDateStart(), e.getDateEnd());
 		
 		-- *AUX*
 		

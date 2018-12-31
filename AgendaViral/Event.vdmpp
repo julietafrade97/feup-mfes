@@ -75,7 +75,7 @@ class Event
 			
 			return self;
 		)
-		pre len newTitle > 0
+		pre len newTitle > 0 and validateDates(newStart, newEnd)
 		post title = newTitle;
 		
 		-- Returns event's id
@@ -139,5 +139,15 @@ class Event
 		)
 		pre totalTickets >= soldTickets + nTickets and state = <Available>
 		post soldTickets = soldTickets~ + nTickets;
+		
+		-- *AUX*
+		-- Verifies if the start date is before the end date
+		public pure validateDates: Event`Date * Event`Date ==> bool
+		validateDates(startDate,endDate) == (
+			dcl natDateStart : nat := startDate.year * 10000 + startDate.month * 100 + startDate.day;
+			dcl natDateEnd : nat := endDate.year * 10000 + endDate.month * 100 + endDate.day;
+			
+			return (natDateStart <= natDateEnd);
+		);
 
 end Event
