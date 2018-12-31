@@ -153,7 +153,7 @@ class Agenda
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set proposedEvents; 
 		
-		-- COMMENT
+		-- Returns if the purchase was successful 
 		public buyTicket: nat * nat ==> bool
 		buyTicket(eventID, nTickets) == (
 			dcl eventBought : Event;
@@ -163,6 +163,7 @@ class Agenda
 					then eventBought := event;
 			);
 			
+			-- verifies if there are enough tickets to sell
 			if eventBought.getTotalTickets() >= eventBought.getSoldTickets() + nTickets
 			then (
 				loggedInUser.buyTickets(nTickets, eventBought.getPrice());

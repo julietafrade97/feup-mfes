@@ -32,7 +32,7 @@ class Regular is subclass of User
 		public pure getTicketsBought: () ==> nat
 		getTicketsBought() == return nTicketsBought;
 		
-		-- Returns if user could buy the tickets
+		-- Makes a purchase
 		public buyTickets: nat1 * real ==> ()
 		buyTickets(nTickets, priceTicket) == (
 			balance := balance - (nTickets * priceTicket);
