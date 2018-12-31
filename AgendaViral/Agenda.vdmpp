@@ -156,15 +156,14 @@ class Agenda
 		-- Returns if the purchase was successful 
 		public buyTicket: nat * nat ==> bool
 		buyTicket(eventID, nTickets) == (
-			dcl eventBought : Event;
-						
+			dcl eventBought : Event;			
 			for all event in set events do (
 					if event.getID() = eventID
 					then eventBought := event;
 			);
-			
 			-- verifies if there are enough tickets to sell
-			if eventBought.getTotalTickets() >= eventBought.getSoldTickets() + nTickets
+			if eventBought.getTotalTickets() >= eventBought.getSoldTickets() + nTickets and 
+					loggedInUser.getBalance() >= nTickets * eventBought.getPrice()
 			then (
 				loggedInUser.buyTickets(nTickets, eventBought.getPrice());
 				eventBought.buy(nTickets);
@@ -228,13 +227,17 @@ class Agenda
 		public findByDistrict: String ==> set of Event
 		findByDistrict(district) == (
 			dcl districtEvents : set of Event := {};
-			for all event in set events do (
+			if existsDistrict(district)
+			then (
+				for all event in set events do (
 					if existsCityInDistrict(event.getCity(), district)
 					then districtEvents := districtEvents union {event}
-			);
-			return districtEvents;
+				);
+				return districtEvents;
+			)
+			else return {}
 		)
-		pre loggedInUser <> nil and existsDistrict(district) and events <> {}
+		pre loggedInUser <> nil and events <> {}
 		post forall e in set RESULT & existsCityInDistrict(e.getCity(), district);
 		
 		
@@ -306,7 +309,7 @@ class Agenda
 			dcl districtCities : set of String := locations(district);
 			return city in set districtCities;
 		)
-		pre locations <> {|->};
+		pre existsDistrict(district) and locations <> {|->};
 		
 		-- Returns if category exists in the agenda's list of categories
 		public pure existsCategory: String ==> bool

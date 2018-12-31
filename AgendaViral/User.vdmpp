@@ -43,6 +43,10 @@ class User
 		public pure getTicketsBought: () ==> nat
 		getTicketsBought() == is subclass responsibility;
 		
+		-- Returns balance
+		public pure getBalance: () ==> nat
+		getBalance() == is subclass responsibility;
+		
 		-- Makes a purchase
 		public buyTickets: nat1 * real ==> ()
 		buyTickets(nTickets, priceTicket) == is subclass responsibility;

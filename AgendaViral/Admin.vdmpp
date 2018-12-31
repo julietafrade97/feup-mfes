@@ -17,6 +17,10 @@ class Admin is subclass of User
 		public pure getTicketsBought: () ==> nat
 		getTicketsBought() == return 0;
 		
+		-- Returns balance
+		public pure getBalance: () ==> nat
+		getBalance() == return 0;
+		
 		-- Makes a purchase
 		public buyTickets: nat1 * real ==> ()
 		buyTickets(nTickets, priceTicket) == return;

@@ -54,6 +54,10 @@ class Event
 		-- Event's amount of sold tickets
 		private soldTickets: nat;
 		
+		-- Ensures inexistence of overbooking
+		inv totalTickets >= soldTickets;
+		
+		
 	operations
 	
 		-- Constructor
