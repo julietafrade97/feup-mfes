@@ -57,7 +57,6 @@ class Event
 		-- Ensures inexistence of overbooking
 		inv totalTickets >= soldTickets;
 		
-		
 	operations
 	
 		-- Constructor
