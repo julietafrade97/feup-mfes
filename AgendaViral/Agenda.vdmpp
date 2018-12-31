@@ -65,12 +65,9 @@ class Agenda
 
 		-- Adds event to Agenda's list of events
 		public addEvent: Event ==> ()
-		addEvent(event) == (
-			events := events union {event};
-		)
+		addEvent(event) == events := events union {event}
 		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set events; 
-		
 		
 		-- Removes event from Agenda's list of proposed events
 		public rejectProposedEvent: Event ==> ()
