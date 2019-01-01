@@ -10,9 +10,9 @@ class AgendaTest is subclass of Tests
 		event1: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Twenty One Pilots, o aclamado duo norte-americano constituido por Tyler Joseph e Josh Dun. The Bandito Tour sera a digressão mundial de apresentacao do album, com a estreia da banda ao vivo em Portugal, dia 17 de Marco, na Altice Arena.", 42, "Lisboa", 20000);
 		event2: Event := new Event("EXO", "Concertos", mk_Event`Date(20,5,2019), mk_Event`Date(20,5,2019), "EXO e um grupo masculino sino-coreano de Seul. Estreia em Portugal dia 20 de Maio, na Altice Arena.", 30, "Lisboa", 20000);
 		event3: Event := new Event("Aberturas: Tom Emerson em conversa com o arquivo Alvaro Siza", "Exposicoes", mk_Event`Date(6,1,2019), mk_Event`Date(6,2,2019), "Visita orientada a exposicao por Matilde Seabra, educadora. Localizacao: Biblioteca de Serralves", 2.5, "Porto", 200);
-		event4: Event := new Event("Brunch Mercearia Bio", "Gastronomia", mk_Event`Date(5,1,2019), mk_Event`Date(5,1,2019), "Ir as compras e aproveitar para tomar um pequeno-almoco reforcado ou antecipar a hora do almoco e a proposta do nosso Brunch, servido entre as 11h e as 16h.", 7.8, "Portimao", 30);
+		event4: Event := new Event("Brunch Mercearia Bio", "Gastronomia", mk_Event`Date(5,1,2019), mk_Event`Date(5,1,2019), "Ir as compras e aproveitar para tomar um pequeno-almoco reforcado ou antecipar a hora do almoco e a proposta do nosso Brunch, servido entre as 11h e as 16h.", 7.8, "Cascais", 30);
 		event5: Event := new Event("Porto VS Belenenses", "Desporto", mk_Event`Date(30,1,2019), mk_Event`Date(30,1,2019), "Lorem ipsum.", 35, "Porto", 50000);
-		event6: Event := new Event("Leixoes VS Famalicao", "Desporto", mk_Event`Date(7,4,2019), mk_Event`Date(7,4,2019), "Lorem ipsum.", 12.5, "Matosinhos", 2000);
+		event6: Event := new Event("Leixoes VS Famalicao", "Desporto", mk_Event`Date(7,4,2020), mk_Event`Date(7,4,2020), "Lorem ipsum.", 12.5, "Matosinhos", 2);
 		
 	operations
 	
@@ -35,10 +35,12 @@ class AgendaTest is subclass of Tests
 			assertTrue(agenda.users <> {|->});
 		);
 		
-		private testLogin: () ==> ()
-		testLogin() == (
+		private testLoginAdmin: () ==> ()
+		testLoginAdmin() == (
+			dcl outcome: bool;
+			agenda.loggedInUser := nil;
 			-- fail
-		  dcl outcome: bool := agenda.login("julieta@gmail.com", "person12345");
+		  outcome:= agenda.login("julieta@gmail.com", "person12345");
 		  assertTrue(outcome = false);
 			assertTrue(agenda.loggedInUser = nil);
 			
@@ -47,6 +49,10 @@ class AgendaTest is subclass of Tests
 		  assertTrue(outcome = true);
 			assertTrue(agenda.loggedInUser <> nil);
 			assertTrue(agenda.loggedInUser = userAdmin);
+			
+			agenda.loggedInUser.buyTickets(1,1);
+			assertTrue(agenda.loggedInUser.getTicketsBought() = 0);
+			assertTrue(agenda.loggedInUser.getBalance() = 0);
 		);
 		
 		private testAddEvent: () ==> ()
@@ -60,11 +66,127 @@ class AgendaTest is subclass of Tests
 			assertTrue(agenda.events <> {});
 		);
 		
+		private testFindByCity: () ==> ()
+		testFindByCity() == (
+			dcl cityEvents : set of Event := {};
+			--fail
+			cityEvents := agenda.findByCity("Faro");
+			assertTrue(cityEvents = {});
+			 
+			--success
+			cityEvents := agenda.findByCity("Porto");
+			assertTrue(cityEvents <>{});
+		);
+		
+		private testFindByDistrict: () ==> ()
+		testFindByDistrict() == (
+			dcl districtEvents : set of Event := {};
+			--fail
+			districtEvents := agenda.findByDistrict("Faro");
+			assertTrue(districtEvents = {});
+			
+			districtEvents := agenda.findByDistrict("Braganca");
+			assertTrue(districtEvents = {});
+			 
+			--success
+			districtEvents := agenda.findByDistrict("Lisboa");
+			assertTrue(districtEvents <> {});
+		);
+		
+		private testFindByCategory: () ==> ()
+		testFindByCategory() == (
+			dcl categoryEvents : set of Event := {};
+			--fail
+			categoryEvents := agenda.findByCategory("Moda");
+			assertTrue(categoryEvents = {});
+			 
+			--success
+			categoryEvents := agenda.findByCategory("Desporto");
+			assertTrue(categoryEvents <>{});
+		);
+		 
+		private testFindByDate: () ==> ()
+		testFindByDate() == (
+			dcl dateEvents : set of Event := {};
+			--fail
+			dateEvents := agenda.findByDate(mk_Event`Date(31,1,2018));
+			assertTrue(dateEvents = {});
+			 
+			--success
+			dateEvents := agenda.findByDate(mk_Event`Date(5,1,2019));
+			assertTrue(dateEvents <>{});
+			
+		);
+
+		private testFindEvents: () ==> ()
+		testFindEvents() == (
+			dcl eventsFound : set of Event := {};
+			--fail
+			eventsFound := agenda.findEvents ("Matosinhos", "", "Moda", mk_Event`Date(7,4,2020));
+			assertTrue(eventsFound = {});			
+			
+			--success
+			eventsFound := agenda.findEvents("Matosinhos", "", "", nil);
+			assertTrue(eventsFound <>{});
+			
+			eventsFound := agenda.findEvents("", "Porto", "", nil);
+			assertTrue(eventsFound <>{});
+			
+			eventsFound := agenda.findEvents("", "", "Desporto", nil);
+			assertTrue(eventsFound <>{});
+			
+			eventsFound := agenda.findEvents("", "", "", mk_Event`Date(7,4,2020));
+			assertTrue(eventsFound <>{});
+			
+			eventsFound := agenda.findEvents("Matosinhos", "", "Desporto", mk_Event`Date(7,4,2020));
+			assertTrue(eventsFound <>{});
+			
+		);
+		
+		private testLoginRegular: () ==> ()
+		testLoginRegular() == (
+			dcl outcome: bool;
+			agenda.loggedInUser := nil;
+			-- fail
+		  outcome := agenda.login("sofia@gmail.com", "person12345");
+		  assertTrue(outcome = false);
+			assertTrue(agenda.loggedInUser = nil);
+			
+			-- success
+			outcome := agenda.login("sofia@gmail.com", "sofia12345");
+		  assertTrue(outcome = true);
+			assertTrue(agenda.loggedInUser <> nil);
+			assertTrue(agenda.loggedInUser = user1);
+		);
+		
+		private testBuyTickets: () ==> ()
+		testBuyTickets() == (
+			--fail
+			dcl outcome: bool := agenda.buyTicket(1, 20001);
+			assertTrue(outcome = false);
+			assertTrue(event1.getSoldTickets() = 0);
+			assertTrue(agenda.loggedInUser.getTicketsBought() = 30);
+			 
+			--success
+			outcome := agenda.buyTicket(6, 2);
+			assertTrue(outcome = true);
+			assertTrue(event6.getSoldTickets() = 2);
+			assertTrue(agenda.loggedInUser.getTicketsBought() = 32);
+		
+		);
+		
 		public test: () ==> ()
 		test() == (
 			testCreateAgenda();
 			testAddUser();
-			testLogin();
+			testLoginAdmin();
 			testAddEvent();
+			testFindByCity();
+			testFindByDistrict();
+			testFindByCategory();
+			testFindByDate();
+			testFindEvents();
+			testLoginRegular();
+			testBuyTickets();
 		);
 end AgendaTest

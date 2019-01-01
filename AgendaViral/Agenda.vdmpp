@@ -171,8 +171,7 @@ class Agenda
 			)
 			else return false
 		)
-		pre loggedInUser <> nil and not loggedInUser.isAdmin()
-		post RESULT = true;
+		pre loggedInUser <> nil and not loggedInUser.isAdmin();
 		
 		-- *FIND EVENTS*
 		
