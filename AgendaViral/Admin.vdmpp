@@ -15,14 +15,14 @@ class Admin is subclass of User
 		
 		-- Returns number of bought tickets
 		public pure getTicketsBought: () ==> nat
-		getTicketsBought() == return 0;
+		getTicketsBought() == is not yet specified;
 		
 		-- Returns balance
 		public pure getBalance: () ==> nat
-		getBalance() == return 0;
+		getBalance() == is not yet specified;
 		
 		-- Makes a purchase
 		public buyTickets: nat1 * real ==> ()
-		buyTickets(nTickets, priceTicket) == return;
+		buyTickets(nTickets, priceTicket) == is not yet specified;
 
 end Admin

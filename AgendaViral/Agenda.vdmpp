@@ -66,13 +66,13 @@ class Agenda
 		-- Adds event to Agenda's list of events
 		public addEvent: Event ==> ()
 		addEvent(event) == events := events union {event}
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set events; 
 		
 		-- Removes event from Agenda's list of proposed events
 		public rejectProposedEvent: Event ==> ()
 		rejectProposedEvent(event) == proposedEvents := proposedEvents \ {event}
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and event in set proposedEvents
 		post event not in set proposedEvents;
 		
 		-- Adds event to Agenda's list of events and removes from Agenda's list of proposed events
@@ -81,7 +81,7 @@ class Agenda
 			events := events union {event};
 			proposedEvents := proposedEvents \ {event};
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and event in set proposedEvents and event not in set events
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and event in set proposedEvents and event not in set events
 		post event not in set proposedEvents and event in set events;
 		
 		-- Returns most popular event
@@ -100,7 +100,7 @@ class Agenda
 		
 			return popularEvent;
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and events <> {};
 		
 		-- Returns most profitable event
 		public mostProfitableEvent: () ==> Event
@@ -118,7 +118,7 @@ class Agenda
 		
 			return profitableEvent;
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and events <> {};
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and events <> {};
 		
 		-- Returns most active user
 		public mostActiveUser: () ==> User
@@ -137,7 +137,7 @@ class Agenda
 		
 			return activeUser;
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = true and users <> {|->};
+		pre loggedInUser <> nil and loggedInUser.isAdmin() and users <> {|->};
 		
 		-- *REGULAR USER ONLY*
 		
@@ -150,7 +150,7 @@ class Agenda
 				then proposedEvents := proposedEvents union {event}
 			);
 		)
-		pre loggedInUser <> nil and loggedInUser.isAdmin() = false and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
+		pre loggedInUser <> nil and not loggedInUser.isAdmin() and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set proposedEvents; 
 		
 		-- Returns if the purchase was successful 
