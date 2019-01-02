@@ -13,6 +13,9 @@ class AgendaTest is subclass of Tests
 		event4: Event := new Event("Brunch Mercearia Bio", "Gastronomia", mk_Event`Date(5,1,2019), mk_Event`Date(5,1,2019), "Ir as compras e aproveitar para tomar um pequeno-almoco reforcado ou antecipar a hora do almoco e a proposta do nosso Brunch, servido entre as 11h e as 16h.", 7.8, "Cascais", 30);
 		event5: Event := new Event("Porto VS Belenenses", "Desporto", mk_Event`Date(30,1,2019), mk_Event`Date(30,1,2019), "Lorem ipsum.", 35, "Porto", 50000);
 		event6: Event := new Event("Leixoes VS Famalicao", "Desporto", mk_Event`Date(7,4,2020), mk_Event`Date(7,4,2020), "Lorem ipsum.", 12.5, "Matosinhos", 2);
+	
+		proposed1: Event := new Event("Workshop Comida Saudavel daTerra", "Gastronomia", mk_Event`Date(15,7,2019), mk_Event`Date(15,7,2019), "Workshop de comida saudavel, daTerra baixa, 15h.", 5, "Porto", 20);
+		proposed2: Event := new Event("Cozinhar Nunca Foi Facil", "Gastronomia", mk_Event`Date(20,12,2019), mk_Event`Date(20,12,2019), "Lorem.", 10, "Lisboa", 35);
 		
 	operations
 	
@@ -168,7 +171,22 @@ class AgendaTest is subclass of Tests
 			assertTrue(outcome = true);
 			assertTrue(event6.getSoldTickets() = 2);
 			assertTrue(agenda.loggedInUser.getTicketsBought() = 32);
+		);
 		
+		private testProposeEvent: () ==> ()
+		testProposeEvent() == (
+			agenda.proposeEvent(proposed1);
+			agenda.proposeEvent(proposed2);
+		);
+		
+		private testRejectProposedEvent: () ==> ()
+		testRejectProposedEvent() == (
+			agenda.rejectProposedEvent(proposed2);
+		);
+		
+		private testAcceptProposedEvent: () ==> ()
+		testAcceptProposedEvent() == (
+			agenda.acceptProposedEvent(proposed1);
 		);
 		
 		public test: () ==> ()
@@ -184,5 +202,9 @@ class AgendaTest is subclass of Tests
 			testFindEvents();
 			testLoginRegular();
 			testBuyTickets();
+			testProposeEvent();
+			testLoginAdmin();
+			testRejectProposedEvent();
+			testAcceptProposedEvent();
 		);
 end AgendaTest
