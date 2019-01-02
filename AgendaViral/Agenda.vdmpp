@@ -201,10 +201,10 @@ class Agenda
 		pre loggedInUser <> nil and events <> {} and 
 				not (city <> "" and district <> "") and 
 				not (city = "" and district = "" and category = "" and date = nil)
-		post if city <> "" then forall e in set RESULT & e.getCity() = city else true and
-				 if district <> "" then forall e in set RESULT & existsCityInDistrict(e.getCity(), district) else true and
-				 if category <> "" then forall e in set RESULT & e.getCategory() = category else true  and
-				 if date <> nil then forall e in set RESULT & wantedDate(date, e.getDateStart(), e.getDateEnd()) else true;
+		post (if city <> "" then forall e in set RESULT & e.getCity() = city else true) and
+				 (if district <> "" then forall e in set RESULT & existsCityInDistrict(e.getCity(), district) else true) and
+				 (if category <> "" then forall e in set RESULT & e.getCategory() = category else true) and
+				 (if date <> nil then forall e in set RESULT & wantedDate(date, e.getDateStart(), e.getDateEnd()) else true);
 		
 		-- by city
 		public findByCity: String ==> set of Event
