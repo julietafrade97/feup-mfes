@@ -2,9 +2,19 @@ class Tests
 	instance variables
 	
 	operations
-	
+			
 		protected assertTrue: bool ==> ()
 		assertTrue(arg) == return 
 		pre arg;
+		
+		public test: () ==> ()
+		test() == (
+			dcl agendaTest: AgendaTest := new AgendaTest();
+			dcl eventTest: EventTest := new EventTest();
+			dcl userTest: UserTest := new UserTest();
+			agendaTest.test();
+			eventTest.test();
+			userTest.test();
+		);
 		
 end Tests

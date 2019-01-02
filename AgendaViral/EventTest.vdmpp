@@ -1,12 +1,15 @@
 class EventTest is subclass of Tests
 		
 	operations
-	
+		public EventTest: () ==> EventTest
+		EventTest() == (				
+			return self;
+		);
+		
 		-- Creates an event, verifies the parameters and simulates a purchase
 		private testCreateEvent: () ==> ()
 		testCreateEvent() == (
 			dcl event: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
-			assertTrue(event.getID() = 1);
 			assertTrue(event.getTitle() = "Twenty One Pilots");
 			assertTrue(event.getCategory() = "Concertos");
 			assertTrue(event.getState() = <Available>);

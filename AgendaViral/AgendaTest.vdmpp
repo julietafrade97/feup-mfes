@@ -19,6 +19,11 @@ class AgendaTest is subclass of Tests
 		
 	operations
 	
+		public AgendaTest: () ==> AgendaTest
+		AgendaTest() == (				
+			return self;
+		);
+	
 		-- Creates agenda and verifies the parameters
 		private testCreateAgenda: () ==> ()
 		testCreateAgenda() == (
@@ -246,4 +251,5 @@ class AgendaTest is subclass of Tests
 			testMostProfitableEvent();
 			testMostActiveUser();
 		);
+		
 end AgendaTest

@@ -2,6 +2,11 @@ class UserTest is subclass of Tests
 
 	operations
 		
+		public UserTest: () ==> UserTest
+		UserTest() == (				
+			return self;
+		);
+		
 		-- Creates a user: admin
 		private testCreateAdmin: () ==> ()
 		testCreateAdmin() == (
