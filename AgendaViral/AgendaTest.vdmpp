@@ -63,6 +63,7 @@ class AgendaTest is subclass of Tests
 			agenda.addEvent(event5);
 			agenda.addEvent(event6);
 			assertTrue(agenda.events <> {});
+			assertTrue(agenda.events = {event1, event2, event3, event4, event5, event6});
 		);
 		
 		private testFindByCity: () ==> ()
@@ -177,16 +178,21 @@ class AgendaTest is subclass of Tests
 		testProposeEvent() == (
 			agenda.proposeEvent(proposed1);
 			agenda.proposeEvent(proposed2);
+			assertTrue(agenda.proposedEvents <> {});
+			assertTrue(agenda.proposedEvents = {proposed1, proposed2});
 		);
 		
 		private testRejectProposedEvent: () ==> ()
 		testRejectProposedEvent() == (
 			agenda.rejectProposedEvent(proposed2);
+			assertTrue(agenda.proposedEvents = {proposed1});
 		);
 		
 		private testAcceptProposedEvent: () ==> ()
 		testAcceptProposedEvent() == (
 			agenda.acceptProposedEvent(proposed1);
+			assertTrue(agenda.proposedEvents = {});
+			assertTrue(agenda.events = {event1, event2, event3, event4, event5, event6, proposed1});
 		);
 		
 		public test: () ==> ()
