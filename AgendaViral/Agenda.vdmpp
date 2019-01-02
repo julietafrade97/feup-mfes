@@ -143,13 +143,7 @@ class Agenda
 		
 		-- Adds event to Agenda's list of proposed event
 		public proposeEvent: Event ==> ()
-		proposeEvent(event) == (
-		dcl allUsers: set of User := rng users;
-			for all user in set allUsers do (
-				if(user.isAdmin() = true)
-				then proposedEvents := proposedEvents union {event}
-			);
-		)
+		proposeEvent(event) == proposedEvents := proposedEvents union {event}
 		pre loggedInUser <> nil and not loggedInUser.isAdmin() and existsCategory(event.getCategory()) and existsCity(event.getCity()) and not existsEvent(event)
 		post event in set proposedEvents; 
 		
