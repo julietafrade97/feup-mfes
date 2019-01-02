@@ -128,10 +128,13 @@ class Agenda
 			dcl value: nat := 0;	
 
 			for all user in set allUsers do (
-				if(user.getTicketsBought() >= value)
+				if(isofclass(Regular, user))
 				then (
-					value := user.getTicketsBought();
-					activeUser := user;
+					if(user.getTicketsBought() >= value)
+					then (
+						value := user.getTicketsBought();
+						activeUser := user;
+					);
 				);
 			);
 		
@@ -318,17 +321,5 @@ class Agenda
 			
 			return (natDateStart <= natDate) and (natDate <= natDateEnd);
 		);
-		
-		-- Returns if user admin exists in the agenda's list of users
-		public pure existsAdmin: () ==> bool
-		existsAdmin() == (
-			dcl allUsers: set of User := rng users;
-			for all user in set allUsers do (
-				if(user.isAdmin() = true)
-				then return true;
-			);
-			return false;
-		)
-		pre users <> {|->};
 
 end Agenda
