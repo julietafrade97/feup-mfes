@@ -2,7 +2,7 @@ class EventTest is subclass of Tests
 		
 	operations
 	
-		-- Creates an event and verifies the parameters
+		-- Creates an event, verifies the parameters and simulates a purchase
 		private testCreateEvent: () ==> ()
 		testCreateEvent() == (
 			dcl event: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(17,3,2019), mk_Event`Date(17,3,2019), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
@@ -17,11 +17,26 @@ class EventTest is subclass of Tests
 			assertTrue(event.getCity() = "Lisboa");
 			assertTrue(event.getTotalTickets() = 100);
 			assertTrue(event.getSoldTickets() = 0);
+			
+			event.buy(100);
+			assertTrue(event.getSoldTickets() = 100);
+			assertTrue(event.getState() = <SoldOut>);
+			assertTrue(event.getStats() = 100);
+			assertTrue(event.getProfit() = 4200);
+		);
+		
+		-- Creates an event, leap year
+		private testCreateEventLeap: () ==> ()
+		testCreateEventLeap() == (
+			dcl event: Event := new Event("Twenty One Pilots", "Concertos", mk_Event`Date(29,2,2020), mk_Event`Date(29,2,2020), "Lorem ipsum dolor sit amet.", 42, "Lisboa", 100);
+			assertTrue(event.getDateStart() = mk_Event`Date(29,2,2020));
+			assertTrue(event.getDateEnd() = mk_Event`Date(29,2,2020));
 		);
 		
 		public test: () ==> ()
 		test() == (
 			testCreateEvent();
+			testCreateEventLeap();
 		);
 		
 end EventTest
