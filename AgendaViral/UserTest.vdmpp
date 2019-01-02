@@ -6,14 +6,12 @@ class UserTest is subclass of Tests
 		private testCreateAdmin: () ==> ()
 		testCreateAdmin() == (
 			dcl user: User := new Admin("julieta@gmail.com", "julieta12345");
-			user.buyTickets(1, 1);
 			assertTrue(user.getEmail() = "julieta@gmail.com");
 			assertTrue(user.isAdmin() = true);
 			assertTrue(user.checkLogin("julieta@gmail.com", "julieta12345") = true);
-			assertTrue(user.getTicketsBought() = 0);
 		);
 		
-		-- Creates a user: regular
+		-- Creates a user: regular and tests buy tickets
 		private testCreateRegular: () ==> ()
 		testCreateRegular() == (
 			dcl user: User := new Regular("sofia@gmail.com", "sofia12345", "Sofia", "Silva", 500, 30);
@@ -21,6 +19,10 @@ class UserTest is subclass of Tests
 			assertTrue(user.isAdmin() = false);
 			assertTrue(user.checkLogin("sofia@gmail.com", "sofia12345") = true);
 			assertTrue(user.getTicketsBought() = 30);
+			
+			user.buyTickets(2, 50);
+			assertTrue(user.getBalance() = 400);
+			assertTrue(user.getTicketsBought() = 32);
 		);
 		
 		public test: () ==> ()
