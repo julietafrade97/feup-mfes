@@ -1,10 +1,14 @@
 package AgendaViral;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import org.overture.codegen.runtime.Maplet;
 import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMSet;
+
+import AgendaViral.Event.Date;
 
 public class Interface {
     private Agenda agenda;
@@ -136,6 +140,7 @@ public class Interface {
 	public void mainMenuRegular(){
 		System.out.println("---------------------------------------------");
 		System.out.println("            Welcome to Agenda Viral!");
+		System.out.println("                  Balance: " + agenda.loggedInUser.getBalance()+"€");
 		System.out.println("---------------------------------------------");
 		System.out.println("1.  Propose Event                  0.  Logout");
 		System.out.println("2.  Find by District");
@@ -152,19 +157,19 @@ public class Interface {
 			case 1:
 				proposeEventMenu();
 				break;
-			case 3:
+			case 2:
 				findByDistrictMenu();
 				break;
-			case 4:
+			case 3:
 				findByCityMenu();
 				break;
-			case 5:
+			case 4:
 				findByCategoryMenu();
 				break;
-			case 6:
+			case 5:
 				findByDateMenu();
 				break;
-			case 7:
+			case 6:
 				findByMultipleFiltersMenu();
 				break;
 			case 0:
@@ -384,9 +389,23 @@ public class Interface {
 	public void eventsMenu(VDMSet events){
 		System.out.println("---------------------------------------------");
 		System.out.println("              	 Events");
-		System.out.println("---------------------------------------------");
-		System.out.println("                                0.  Main Menu");
-		System.out.println(events);
+		System.out.println("---------------------------------------------");  
+		for (Iterator iter = events.iterator(); iter.hasNext(); ) {
+	      Event event = (Event) iter.next();
+	      System.out.println("ID: " + event.getID());
+	      System.out.println("TITLE: " + event.getTitle());
+	      System.out.println("CATEGOTY: " + event.getCategory());
+	      System.out.println("CITY: " + event.getCity());
+	      System.out.println("DATE START: " + event.getDateStart().day+"/"+ event.getDateStart().month+"/"+ event.getDateStart().year + " DATE END: " +event.getDateEnd().day+"/"+ event.getDateEnd().month+"/"+ event.getDateEnd().year);
+	      System.out.println("PRICE: " + event.getPrice() + " TOTAL TICKETS: " + event.getTotalTickets() + " SOLD TICKETS: " + event.getSoldTickets());
+	      System.out.println("DESCRIPTION: " + event.getDescription());
+	      System.out.println("...........................................");
+	    }
+		if(agenda.loggedInUser.isAdmin())
+			System.out.println("                                0.  Main Menu");
+		else
+			System.out.println("1. Buy                          0.  Main Menu");
+		
 		System.out.println("---------------------------------------------");
 		System.out.print("Option: ");
 		
@@ -394,6 +413,20 @@ public class Interface {
 		scanner.nextLine();
 		
 		switch (option){
+		case 1:
+			System.out.print("Event ID: ");
+			int eventID = scanner.nextInt();
+			scanner.nextLine();
+			System.out.print("Number of Tickets: ");
+			int nTickets = scanner.nextInt();
+			scanner.nextLine();
+			boolean res = agenda.buyTicket(eventID, nTickets);
+			if(res)
+				System.out.println("Tickets bought with success!");
+			else
+				System.out.println("Error buying tickets!");
+			mainMenu();
+			break;
 		case 0:
 			mainMenu();
 			break;
