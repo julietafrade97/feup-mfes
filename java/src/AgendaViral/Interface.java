@@ -3,6 +3,7 @@ package AgendaViral;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.lang.Object;
 
 import org.overture.codegen.runtime.Maplet;
 import org.overture.codegen.runtime.SetUtil;
@@ -85,7 +86,7 @@ public class Interface {
 		if (agenda.login(email, password))
 			mainMenu();
 		else
-			System.out.println("Error!");
+			System.out.println(" > Error: login failed");
 	}
 
 	public void mainMenu() {
@@ -94,6 +95,10 @@ public class Interface {
 		else
 			mainMenuRegular();
 	}
+
+	/*
+	 * ADMIN
+	 */
 
 	public void mainMenuAdmin() {
 		System.out.println(" ------------------------------------------- ");
@@ -106,9 +111,9 @@ public class Interface {
 		System.out.println(" 5.  Find by Category");
 		System.out.println(" 6.  Find by Date");
 		System.out.println(" 7.  Find by Multiple Filters");
-		System.out.println(" 8.  View Most Popular");
-		System.out.println(" 9.  View Most Profitable");
-		System.out.println(" 10. View Most Active User");
+		System.out.println(" 8.  Most Popular Event");
+		System.out.println(" 9.  Most Profitable Event");
+		System.out.println(" 10. Most Active User");
 		System.out.println(" ------------------------------------------- ");
 
 		System.out.print(" > Option: ");
@@ -157,6 +162,66 @@ public class Interface {
 		}
 	}
 
+	public void proposedEventsMenu() {
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|               Proposed Events             |");
+		System.out.println(" ------------------------------------------- ");
+		for (Iterator iter = agenda.proposedEvents.iterator(); iter.hasNext();) {
+			Event event = (Event) iter.next();
+			System.out.println(" Id: " + event.getID());
+			System.out.println(" Title: " + event.getTitle());
+
+			if (iter.hasNext())
+				System.out.println("");
+		}
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.print(" > Event Id: ");
+		int option = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.println("");
+
+		for (Iterator iter = agenda.proposedEvents.iterator(); iter.hasNext();) {
+			Event event = (Event) iter.next();
+
+			if (option == event.getID().intValue()) {
+				proposedEventMenu(event);
+			}
+		}
+
+		mainMenuAdmin();
+	}
+
+	public void proposedEventMenu(Event event) {
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|               Proposed Event             |");
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.println(" Id: " + event.getID());
+		System.out.println(" Title: " + event.getTitle());
+		System.out.println(" Category: " + event.getCategory());
+		System.out.println(" City: " + event.getCity());
+		System.out.println(" Date: from " + event.getDateStart().day + "/" + event.getDateStart().month + "/"
+				+ event.getDateStart().year + " to " + event.getDateEnd().day + "/" + event.getDateEnd().month
+				+ "/" + event.getDateEnd().year);
+		System.out.println(" Price: " + event.getPrice() + " euros");
+		System.out.println(" Total Tickets: " + event.getTotalTickets() + " | Sold Tickets: " + event.getSoldTickets());
+		System.out.println(" Descriprion: " + event.getDescription());
+
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.print(" > Accept or Reject (A/R): ");
+		int option = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.println("");
+	}
+
+	/*
+	 * REGULAR USER
+	 */
+
 	public void mainMenuRegular() {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|                AGENDA VIRAL               |");
@@ -168,7 +233,7 @@ public class Interface {
 		System.out.println(" 5.  Find by Date");
 		System.out.println(" 6.  Find by Multiple Filters");
 		System.out.println(" ------------------------------------------- ");
-		System.out.println(" ! Balance: " + agenda.loggedInUser.getBalance() + "€");
+		System.out.println(" ! Balance: " + agenda.loggedInUser.getBalance() + " euros");
 
 		System.out.print(" > Option: ");
 		int option = scanner.nextInt();
@@ -208,10 +273,6 @@ public class Interface {
 
 	}
 
-	public void proposedEventsMenu() {
-
-	}
-
 	public void proposeEventMenu() {
 
 	}
@@ -220,7 +281,7 @@ public class Interface {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|              Find By District             |");
 		System.out.println(" ------------------------------------------- ");
-		System.out.println(" 1.  Porto                        0. Go Back");
+		System.out.println(" 1.  Porto                         0. Return");
 		System.out.println(" 2.  Lisboa");
 		System.out.println(" 3.  Faro");
 		System.out.println(" ------------------------------------------- ");
@@ -258,7 +319,7 @@ public class Interface {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|                Find By City               |");
 		System.out.println(" ------------------------------------------- ");
-		System.out.println(" - PORTO                          0. Go Back");
+		System.out.println(" - PORTO                           0. Return");
 		System.out.println(" 1.  Porto");
 		System.out.println(" 2.  Matosinhos");
 		System.out.println(" 3.  Maia");
@@ -330,7 +391,7 @@ public class Interface {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|              Find By Category             |");
 		System.out.println(" ------------------------------------------- ");
-		System.out.println(" 1.  Concertos                    0. Go Back");
+		System.out.println(" 1.  Concertos                     0. Return");
 		System.out.println(" 2.  Exposicoes");
 		System.out.println(" 3.  Gastronomia");
 		System.out.println(" 4.  Moda");
