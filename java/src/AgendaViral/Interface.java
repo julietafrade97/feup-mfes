@@ -488,7 +488,7 @@ public class Interface {
 			break;
 		}
 
-		eventsMenu(events);
+		foundEventsMenu(events);
 	}
 
 	public void findByCityMenu() {
@@ -560,7 +560,7 @@ public class Interface {
 			break;
 		}
 
-		eventsMenu(events);
+		foundEventsMenu(events);
 	}
 
 	public void findByCategoryMenu() {
@@ -610,7 +610,7 @@ public class Interface {
 			break;
 		}
 
-		eventsMenu(events);
+		foundEventsMenu(events);
 	}
 
 	public void findByDateMenu() {
@@ -635,7 +635,7 @@ public class Interface {
 
 		VDMSet events = agenda.findByDate(new Event.Date(day, month, year));
 
-		eventsMenu(events);
+		foundEventsMenu(events);
 	}
 
 	public void findByMultipleFiltersMenu() {
@@ -683,63 +683,92 @@ public class Interface {
 			events = agenda.findEvents(city, district, category, new Event.Date(day, month, year));
 		}
 
-		eventsMenu(events);
+		foundEventsMenu(events);
 	}
-
-	public void eventsMenu(VDMSet events) {
-		System.out.println("---------------------------------------------");
-		System.out.println("              	 Events");
-		System.out.println("---------------------------------------------");
+	
+	public void foundEventsMenu(VDMSet events) {
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|                 Found Events              |");
+		System.out.println(" ------------------------------------------- ");
 		for (Iterator iter = events.iterator(); iter.hasNext();) {
 			Event event = (Event) iter.next();
-			System.out.println("ID: " + event.getID());
-			System.out.println("TITLE: " + event.getTitle());
-			System.out.println("CATEGOTY: " + event.getCategory());
-			System.out.println("CITY: " + event.getCity());
-			System.out.println("DATE START: " + event.getDateStart().day + "/" + event.getDateStart().month + "/"
-					+ event.getDateStart().year + " DATE END: " + event.getDateEnd().day + "/"
-					+ event.getDateEnd().month + "/" + event.getDateEnd().year);
-			System.out.println("PRICE: " + event.getPrice() + "�");
-			System.out
-					.println("TOTAL TICKETS: " + event.getTotalTickets() + " SOLD TICKETS: " + event.getSoldTickets());
-			System.out.println("DESCRIPTION: " + event.getDescription());
-			System.out.println("");
+			System.out.println(" Id: " + event.getID());
+			System.out.println(" Title: " + event.getTitle());
+
+			if (iter.hasNext())
+				System.out.println("");
 		}
-		if (agenda.loggedInUser.isAdmin())
-			System.out.println("                                0.  Main Menu");
-		else
-			System.out.println("1. Buy                          0.  Main Menu");
 
-		System.out.println("---------------------------------------------");
-		System.out.print("Option: ");
+		if (events.isEmpty())
+			System.out.println("                No events                ");
 
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("                                   0. Return ");
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.print(" > Event Id: ");
 		int option = scanner.nextInt();
 		scanner.nextLine();
 
-		switch (option) {
-		case 1:
-			System.out.print("Event ID: ");
-			int eventID = scanner.nextInt();
-			scanner.nextLine();
+		System.out.println("");
+		
+		if (option == 0) {
+			mainMenu();
+		}
+
+		for (Iterator iter = events.iterator(); iter.hasNext();) {
+			Event event = (Event) iter.next();
+
+			if (option == event.getID().intValue()) {
+				foundEventMenu(event, events);
+			}
+		}
+	}
+
+	public void foundEventMenu(Event event, VDMSet events) {
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|                   Event                   |");
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.println(" Id: " + event.getID());
+		System.out.println(" Title: " + event.getTitle());
+		System.out.println(" Category: " + event.getCategory());
+		System.out.println(" City: " + event.getCity());
+		System.out.println(" Date: from " + event.getDateStart().day + "/" + event.getDateStart().month + "/"
+				+ event.getDateStart().year + " to " + event.getDateEnd().day + "/" + event.getDateEnd().month + "/"
+				+ event.getDateEnd().year);
+		System.out.println(" Price: " + event.getPrice() + " euros");
+		System.out.println(" Total Tickets: " + event.getTotalTickets() + " | Sold Tickets: " + event.getSoldTickets());
+		System.out.println(" Descriprion: " + event.getDescription());
+
+		System.out.println(" ------------------------------------------- ");
+		if(!agenda.loggedInUser.isAdmin())
+			System.out.println(" 1.  Buy Tickets                    0. Return");
+		else 
+			System.out.println("                                   0. Return ");
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.print(" > Option: ");
+		int option = scanner.nextInt();
+		scanner.nextLine();
+
+		System.out.println("");
+
+		if (option==1){
 			System.out.print("Number of Tickets: ");
 			int nTickets = scanner.nextInt();
 			scanner.nextLine();
-			boolean res = agenda.buyTicket(eventID, nTickets);
+			boolean res = agenda.buyTicket(event.getID(), nTickets);
 			if (res)
 				System.out.println("Tickets bought with success!");
 			else
 				System.out.println("Error buying tickets!");
 			mainMenu();
-			break;
-		case 0:
-			mainMenu();
-			break;
-		default:
-			mainMenu();
-			break;
+		}
+		else {
+			foundEventsMenu(events);
 		}
 
-		eventsMenu(events);
 	}
 
 }
