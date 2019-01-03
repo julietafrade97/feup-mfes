@@ -7,6 +7,7 @@ import org.overture.codegen.runtime.Maplet;
 import org.overture.codegen.runtime.SetUtil;
 import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMSet;
+import java.util.*;
 
 import AgendaViral.Event.Date;
 
@@ -140,7 +141,7 @@ public class Interface {
 	public void mainMenuRegular(){
 		System.out.println("---------------------------------------------");
 		System.out.println("            Welcome to Agenda Viral!");
-		System.out.println("                  Balance: " + agenda.loggedInUser.getBalance()+"€");
+		System.out.println("                Balance: " + agenda.loggedInUser.getBalance()+"€");
 		System.out.println("---------------------------------------------");
 		System.out.println("1.  Propose Event                  0.  Logout");
 		System.out.println("2.  Find by District");
@@ -370,8 +371,52 @@ public class Interface {
 		eventsMenu(events);
 	}
 	
-	public void findByMultipleFiltersMenu(){
+	public void findByMultipleFiltersMenu(){ 
+		System.out.println("---------------------------------------------");
+		System.out.println("                Find by Date");
+		System.out.println("---------------------------------------------");
+		System.out.println("-Cities:");
+		System.out.println("Porto, Matosinhos, Maia, Vila Nova de Gaia");
+		System.out.println("Lisboa, Amadora, Cascais, Sintra");
+		System.out.println("Faro, Albufeira, Portimao");
+		System.out.println("");
+		System.out.println("-Districts:");
+		System.out.println("Porto, Lisboa, Faro");
+		System.out.println("");
+		System.out.println("-Categories: ");
+		System.out.println("Concertos, Exposicoes, Gastronomia, Moda");
+		System.out.println("Desporto, Natureza");
+		System.out.println("---------------------------------------------");
+		System.out.print("City: ");
+		String city = scanner.nextLine();
+		
+		String district = "";
+		if(city.equals("")){
+			System.out.print("District: ");
+			district = scanner.nextLine();
+		}
+		
+		System.out.print("Category: ");
+		String category = scanner.nextLine();
+		
+		System.out.print("Date[dd/mm/yy]: ");
+		String date = scanner.nextLine();
+		
+		VDMSet events = null;
+		
+		if(date.equals("")){
+			events = agenda.findEvents(city, district, category, null);
+		}
+		else{
+			String[] parts = date.split("/");
+			
+			int day= Integer.parseInt(parts[0]);
+			int month = Integer.parseInt(parts[1]);
+			int year = Integer.parseInt(parts[2]);
+			events = agenda.findEvents(city, district, category, new Event.Date(day, month, year));
+		}
 
+		eventsMenu(events);
 	}
 
 	public void viewMostPopularMenu(){
@@ -397,9 +442,10 @@ public class Interface {
 	      System.out.println("CATEGOTY: " + event.getCategory());
 	      System.out.println("CITY: " + event.getCity());
 	      System.out.println("DATE START: " + event.getDateStart().day+"/"+ event.getDateStart().month+"/"+ event.getDateStart().year + " DATE END: " +event.getDateEnd().day+"/"+ event.getDateEnd().month+"/"+ event.getDateEnd().year);
-	      System.out.println("PRICE: " + event.getPrice() + " TOTAL TICKETS: " + event.getTotalTickets() + " SOLD TICKETS: " + event.getSoldTickets());
+	      System.out.println("PRICE: " + event.getPrice() +"€");
+	      System.out.println("TOTAL TICKETS: " + event.getTotalTickets() + " SOLD TICKETS: " + event.getSoldTickets());
 	      System.out.println("DESCRIPTION: " + event.getDescription());
-	      System.out.println("...........................................");
+	      System.out.println("");
 	    }
 		if(agenda.loggedInUser.isAdmin())
 			System.out.println("                                0.  Main Menu");
