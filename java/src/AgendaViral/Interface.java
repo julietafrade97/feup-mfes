@@ -161,6 +161,55 @@ public class Interface {
 			break;
 		}
 	}
+	
+	public void addEventMenu() {
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|                 Add Event                 |");
+		System.out.println(" ------------------------------------------- ");
+		
+		System.out.print(" > Title: ");
+		String title = scanner.nextLine();
+		
+		System.out.print(" > Category: ");
+		String category = scanner.nextLine();
+		
+		System.out.print(" > Starting Date[dd/mm/yy]: ");
+		String startDate = scanner.nextLine();
+		String[] part1 = startDate.split("/");
+
+		int day1 = Integer.parseInt(part1[0]);
+		int month1 = Integer.parseInt(part1[1]);
+		int year1 = Integer.parseInt(part1[2]);
+		
+		System.out.print(" > Ending Date[dd/mm/yy]: ");
+		String endDate = scanner.nextLine();
+		String[] part2 = endDate.split("/");
+
+		int day2 = Integer.parseInt(part2[0]);
+		int month2 = Integer.parseInt(part2[1]);
+		int year2 = Integer.parseInt(part2[2]);
+		
+		System.out.print(" > Description: ");
+		String description = scanner.nextLine();
+		
+		System.out.print(" > Price: ");
+		int price = scanner.nextInt();
+		scanner.nextLine();
+		
+		System.out.print(" > City: ");
+		String city = scanner.nextLine();
+		
+		System.out.print(" > Total Tickets: ");
+		int tickets = scanner.nextInt();
+		scanner.nextLine();
+		
+		Event event = new Event(title, category, new Event.Date(day1, month1, year1),
+				new Event.Date(day2, month2, year2), description, price, city, tickets);
+		
+		agenda.addEvent(event);
+		
+		mainMenuAdmin();
+	}
 
 	public void proposedEventsMenu() {
 		System.out.println(" ------------------------------------------- ");
@@ -277,10 +326,6 @@ public class Interface {
 			loginMenu();
 			break;
 		}
-	}
-
-	public void addEventMenu() {
-
 	}
 
 	public void proposeEventMenu() {
