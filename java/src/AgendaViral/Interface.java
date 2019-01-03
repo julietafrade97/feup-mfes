@@ -26,12 +26,10 @@ public class Interface {
 		Regular user3 = new Regular("carlos@gmail.com", "carlos12345", "Carlos", "Freitas", 800L, 10L);
 		Regular user4 = new Regular("vicente@gmail.com", "vicente12345", "Vicente", "Espinha", 100L, 50L);
 		Event event1 = new Event("Twenty One Pilots", "Concertos", new Event.Date(17L, 3L, 2019L),
-				new Event.Date(17L, 3L, 2019L),
-				"Twenty One Pilots, o aclamado duo norte-americano constituido por Tyler Joseph e Josh Dun. The Bandito Tour sera a digressÃ£o mundial de apresentacao do album, com a estreia da banda ao vivo em Portugal, dia 17 de Marco, na Altice Arena.",
-				42L, "Lisboa", 20000L);
+				new Event.Date(17L, 3L, 2019L), "The Bandito Tour, dia 17 de Marco, na Altice Arena.", 42L, "Lisboa",
+				20000L);
 		Event event2 = new Event("EXO", "Concertos", new Event.Date(20L, 5L, 2019L), new Event.Date(20L, 5L, 2019L),
-				"EXO e um grupo masculino sino-coreano de Seul. Estreia em Portugal dia 20 de Maio, na Altice Arena.",
-				30L, "Lisboa", 20000L);
+				"Estreia em Portugal dia 20 de Maio, na Altice Arena.", 30L, "Lisboa", 20000L);
 		Event event3 = new Event("Aberturas: Tom Emerson em conversa com o arquivo Alvaro Siza", "Exposicoes",
 				new Event.Date(6L, 1L, 2019L), new Event.Date(6L, 2L, 2019L),
 				"Visita orientada a exposicao por Matilde Seabra, educadora. Localizacao: Biblioteca de Serralves", 2.5,
@@ -63,9 +61,13 @@ public class Interface {
 		agenda.addEvent(event5);
 		agenda.addEvent(event6);
 
-		agenda.login("sofia@gmail.com", "sofia1235");
+		agenda.login("carlos@gmail.com", "carlos12345");
+		agenda.buyTicket(2, 5);
+
+		agenda.login("sofia@gmail.com", "sofia12345");
 		agenda.proposeEvent(proposed1);
 		agenda.proposeEvent(proposed2);
+		agenda.buyTicket(1, 5);
 
 		loginMenu();
 	}
@@ -228,12 +230,18 @@ public class Interface {
 			System.out.println("              No proposed events             ");
 
 		System.out.println(" ------------------------------------------- ");
+		System.out.println("                                   0. Return ");
+		System.out.println(" ------------------------------------------- ");
 
 		System.out.print(" > Event Id: ");
 		int option = scanner.nextInt();
 		scanner.nextLine();
 
 		System.out.println("");
+
+		if (option == 0) {
+			mainMenu();
+		}
 
 		for (Iterator iter = agenda.proposedEvents.iterator(); iter.hasNext();) {
 			Event event = (Event) iter.next();
@@ -685,7 +693,7 @@ public class Interface {
 
 		foundEventsMenu(events);
 	}
-	
+
 	public void foundEventsMenu(VDMSet events) {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|                 Found Events              |");
@@ -711,7 +719,7 @@ public class Interface {
 		scanner.nextLine();
 
 		System.out.println("");
-		
+
 		if (option == 0) {
 			mainMenu();
 		}
@@ -742,9 +750,9 @@ public class Interface {
 		System.out.println(" Descriprion: " + event.getDescription());
 
 		System.out.println(" ------------------------------------------- ");
-		if(!agenda.loggedInUser.isAdmin())
+		if (!agenda.loggedInUser.isAdmin())
 			System.out.println(" 1.  Buy Tickets                    0. Return");
-		else 
+		else
 			System.out.println("                                   0. Return ");
 		System.out.println(" ------------------------------------------- ");
 
@@ -754,8 +762,8 @@ public class Interface {
 
 		System.out.println("");
 
-		if (option==1){
-			System.out.print("Number of Tickets: ");
+		if (option == 1) {
+			System.out.print(" > Number of Tickets: ");
 			int nTickets = scanner.nextInt();
 			scanner.nextLine();
 			boolean res = agenda.buyTicket(event.getID(), nTickets);
@@ -764,8 +772,7 @@ public class Interface {
 			else
 				System.out.println("Error buying tickets!");
 			mainMenu();
-		}
-		else {
+		} else {
 			foundEventsMenu(events);
 		}
 
