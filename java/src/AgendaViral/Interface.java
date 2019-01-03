@@ -1,5 +1,10 @@
 package AgendaViral;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.overture.codegen.runtime.Maplet;
+import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.VDMSet;
 
 public class Interface {
     private Agenda agenda;
@@ -28,6 +33,18 @@ public class Interface {
 		agenda.addUser(user3);
 		agenda.addUser(user4);
 		
+		agenda.login("julieta@gmail.com", "julieta12345");
+		agenda.addEvent(event1);
+		agenda.addEvent(event2);
+		agenda.addEvent(event3);
+		agenda.addEvent(event4);
+		agenda.addEvent(event5);
+		agenda.addEvent(event6);
+		
+		agenda.login("sofia@gmail.com", "sofia1235");
+		agenda.proposeEvent(proposed1);
+		agenda.proposeEvent(proposed2);
+		
 		loginMenu();
 	}
 	
@@ -35,17 +52,13 @@ public class Interface {
 		System.out.println("---------------------------------------------");
 		System.out.println("                    Login");
 		System.out.println("---------------------------------------------");
-		System.out.println("Email: ");
-		
+		System.out.print("Email: ");
 		String email = scanner.nextLine();	
-		System.out.println("Password: ");
+		System.out.print("Password: ");
 		String password = scanner.nextLine();
 		
 		if(agenda.login(email, password)){
-			if(agenda.loggedInUser.isAdmin())
-				mainMenuAdmin();
-			else
-				mainMenuRegular();
+			mainMenu();
 		}
 		else{
 			System.out.println("Error!");
@@ -54,11 +67,18 @@ public class Interface {
 		
 	}
 	
+	public void mainMenu(){
+		if(agenda.loggedInUser.isAdmin())
+			mainMenuAdmin();
+		else
+			mainMenuRegular();
+	}
+	
 	public void mainMenuAdmin(){
 		System.out.println("---------------------------------------------");
 		System.out.println("            Welcome to Agenda Viral!");
 		System.out.println("---------------------------------------------");
-		System.out.println("1.  Add Event");
+		System.out.println("1.  Add Event                      0.  Logout");
 		System.out.println("2.  Proposed Events");
 		System.out.println("3.  Find by District");
 		System.out.println("4.  Find by City");
@@ -68,11 +88,9 @@ public class Interface {
 		System.out.println("8.  View Most Popular");
 		System.out.println("9.  View Most Profitable");
 		System.out.println("10. View Most Active User");
-		System.out.println("11. Logout");
-		System.out.println("");
-		
+		System.out.println("---------------------------------------------");
+		System.out.print("Option: ");
 		int option = scanner.nextInt();
-		// Skip the newline
 		scanner.nextLine();
 
 		switch (option){
@@ -106,7 +124,7 @@ public class Interface {
 			case 10:
 				viewMostActiveMenu();
 				break;
-			case 11:
+			case 0:
 				loginMenu();
 				break;
 			default:
@@ -119,17 +137,15 @@ public class Interface {
 		System.out.println("---------------------------------------------");
 		System.out.println("            Welcome to Agenda Viral!");
 		System.out.println("---------------------------------------------");
-		System.out.println("1.  Propose Event");
+		System.out.println("1.  Propose Event                  0.  Logout");
 		System.out.println("2.  Find by District");
 		System.out.println("3.  Find by City");
 		System.out.println("4.  Find by Category");
 		System.out.println("5.  Find by Date");
 		System.out.println("6.  Find by Multiple Filters");
-		System.out.println("7.  Logout");
-		System.out.println("");
-		
+		System.out.println("---------------------------------------------");
+		System.out.print("Option: ");
 		int option = scanner.nextInt();
-		// Skip the newline
 		scanner.nextLine();
 
 		switch (option){
@@ -151,7 +167,7 @@ public class Interface {
 			case 7:
 				findByMultipleFiltersMenu();
 				break;
-			case 11:
+			case 0:
 				loginMenu();
 				break;
 			default:
@@ -173,23 +189,184 @@ public class Interface {
 	}
 	
 	public void findByDistrictMenu(){
+		System.out.println("---------------------------------------------");
+		System.out.println("              Find by District");
+		System.out.println("---------------------------------------------");
+		System.out.println("1.  Porto                         0.  Go Back");
+		System.out.println("2.  Lisboa");
+		System.out.println("3.  Faro");
+		System.out.println("---------------------------------------------");
+		System.out.print("District: ");
+		int option = scanner.nextInt();
+		scanner.nextLine();
 		
+		VDMSet events = SetUtil.set();
+		
+		switch (option){
+		case 1:
+			events = agenda.findByDistrict("Porto");
+			break;
+		case 2:
+			events = agenda.findByDistrict("Lisboa");
+			break;
+		case 3:
+			events = agenda.findByDistrict("Faro");
+			break;
+		case 0:
+			mainMenu();
+			break;
+		default:
+			mainMenu();
+			break;
+		}
+		
+		eventsMenu(events);
 	}
+
 	
 	public void findByCityMenu(){
+		System.out.println("---------------------------------------------");
+		System.out.println("              Find by Category");
+		System.out.println("---------------------------------------------");
+		System.out.println("- Porto                           0.  Go Back");
+		System.out.println("1.  Porto");
+		System.out.println("2.  Matosinhos");
+		System.out.println("3.  Maia");
+		System.out.println("4.  Vila Nova de Gaia");
+		System.out.println("- Lisboa");
+		System.out.println("5.  Lisboa");
+		System.out.println("6.  Amadora");
+		System.out.println("7.  Cascais");
+		System.out.println("8.  Sintra");
+		System.out.println("- Faro");
+		System.out.println("9.  Faro");
+		System.out.println("10. Albufeira");
+		System.out.println("11. Portimao");
+		System.out.println("---------------------------------------------");
+		System.out.print("Category: ");
 		
+		int option = scanner.nextInt();
+		scanner.nextLine();
+		
+		VDMSet events = SetUtil.set();		
+		switch (option){
+		case 1:
+			events = agenda.findByCity("Porto");
+			break;
+		case 2:
+			events = agenda.findByCity("Matosinhos");
+			break;
+		case 3:
+			events = agenda.findByCity("Maia");
+			break;
+		case 4:
+			events = agenda.findByCity("Vila Nova de Gaia");
+			break;
+		case 5:
+			events = agenda.findByCity("Lisboa");
+			break;
+		case 6:
+			events = agenda.findByCity("Amadora");
+			break;
+		case 7:
+			events = agenda.findByCity("Cascais");
+			break;
+		case 8:
+			events = agenda.findByCity("Sintra");
+			break;
+		case 9:
+			events = agenda.findByCity("Faro");
+			break;
+		case 10:
+			events = agenda.findByCity("Albufeira");
+			break;
+		case 11:
+			events = agenda.findByCity("Portimao");
+			break;
+		case 0:
+			mainMenu();
+			break;
+		default:
+			mainMenu();
+			break;
+		}
+		
+		eventsMenu(events);
 	}
 	
 	public void findByCategoryMenu(){
+		System.out.println("---------------------------------------------");
+		System.out.println("              Find by Category");
+		System.out.println("---------------------------------------------");
+		System.out.println("1.  Concertos                     0.  Go Back");
+		System.out.println("2.  Exposicoes");
+		System.out.println("3.  Gastronomia");
+		System.out.println("4.  Moda");
+		System.out.println("5.  Desporto");
+		System.out.println("6.  Natureza");
+		System.out.println("---------------------------------------------");
+		System.out.print("Category: ");
 		
+		int option = scanner.nextInt();
+		scanner.nextLine();
+		
+		VDMSet events = SetUtil.set();
+		
+		switch (option){
+		case 1:
+			events = agenda.findByCategory("Concertos");
+			break;
+		case 2:
+			events = agenda.findByCategory("Exposicoes");
+			break;
+		case 3:
+			events = agenda.findByCategory("Gastronomia");
+			break;
+		case 4:
+			events = agenda.findByCategory("Moda");
+			break;
+		case 5:
+			events = agenda.findByCategory("Desporto");
+			break;
+		case 6:
+			events = agenda.findByCategory("Natureza");
+			break;
+		case 0:
+			mainMenu();
+			break;
+		default:
+			mainMenu();
+			break;
+		}
+		
+		eventsMenu(events);
 	}
 	
 	public void findByDateMenu(){
-	
+		System.out.println("---------------------------------------------");
+		System.out.println("                Find by Date");
+		System.out.println("---------------------------------------------");
+		System.out.println("                                0.  Main Menu");
+		System.out.print("Date[dd/mm/yy]: ");
+		String date = scanner.nextLine();
+		
+		if(date.equals("0")){
+			mainMenu();
+		}
+		
+		String[] parts = date.split("/");
+		
+		int day = Integer.parseInt(parts[0]);
+		int month = Integer.parseInt(parts[1]);
+		int year = Integer.parseInt(parts[2]);
+		
+		VDMSet events = agenda.findByDate(new Event.Date(day, month, year));
+		
+		eventsMenu(events);
 	}
 	
 	public void findByMultipleFiltersMenu(){
-		
+
 	}
 
 	public void viewMostPopularMenu(){
@@ -204,8 +381,28 @@ public class Interface {
 		
 	}
 	
-	
-	
-	
+	public void eventsMenu(VDMSet events){
+		System.out.println("---------------------------------------------");
+		System.out.println("              	 Events");
+		System.out.println("---------------------------------------------");
+		System.out.println("                                0.  Main Menu");
+		System.out.println(events);
+		System.out.println("---------------------------------------------");
+		System.out.print("Option: ");
+		
+		int option = scanner.nextInt();
+		scanner.nextLine();
+		
+		switch (option){
+		case 0:
+			mainMenu();
+			break;
+		default:
+			mainMenu();
+			break;
+		}
+		
+		eventsMenu(events);
+	}
 
 }
