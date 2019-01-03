@@ -174,6 +174,10 @@ public class Interface {
 			if (iter.hasNext())
 				System.out.println("");
 		}
+
+		if (agenda.proposedEvents.isEmpty())
+			System.out.println("              No proposed events             ");
+
 		System.out.println(" ------------------------------------------- ");
 
 		System.out.print(" > Event Id: ");
@@ -203,8 +207,8 @@ public class Interface {
 		System.out.println(" Category: " + event.getCategory());
 		System.out.println(" City: " + event.getCity());
 		System.out.println(" Date: from " + event.getDateStart().day + "/" + event.getDateStart().month + "/"
-				+ event.getDateStart().year + " to " + event.getDateEnd().day + "/" + event.getDateEnd().month
-				+ "/" + event.getDateEnd().year);
+				+ event.getDateStart().year + " to " + event.getDateEnd().day + "/" + event.getDateEnd().month + "/"
+				+ event.getDateEnd().year);
 		System.out.println(" Price: " + event.getPrice() + " euros");
 		System.out.println(" Total Tickets: " + event.getTotalTickets() + " | Sold Tickets: " + event.getSoldTickets());
 		System.out.println(" Descriprion: " + event.getDescription());
@@ -212,10 +216,16 @@ public class Interface {
 		System.out.println(" ------------------------------------------- ");
 
 		System.out.print(" > Accept or Reject (A/R): ");
-		int option = scanner.nextInt();
-		scanner.nextLine();
+		String action = scanner.nextLine();
 
 		System.out.println("");
+
+		if (action.equals("A"))
+			agenda.acceptProposedEvent(event);
+		else if (action.equals("R"))
+			agenda.rejectProposedEvent(event);
+
+		mainMenuAdmin();
 	}
 
 	/*
