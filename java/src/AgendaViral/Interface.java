@@ -43,7 +43,7 @@ public class Interface {
 		Event event5 = new Event("Porto VS Belenenses", "Desporto", new Event.Date(30L, 1L, 2019L),
 				new Event.Date(30L, 1L, 2019L), "Lorem ipsum.", 35L, "Porto", 50000L);
 		Event event6 = new Event("Leixoes VS Famalicao", "Desporto", new Event.Date(7L, 4L, 2020L),
-				new Event.Date(7L, 4L, 2020L), "Lorem ipsum.", 12.5, "Matosinhos", 2L);
+				new Event.Date(7L, 4L, 2020L), "Lorem ipsum.", 12.5, "Matosinhos", 2000L);
 		Event proposed1 = new Event("Workshop Comida Saudavel daTerra", "Gastronomia", new Event.Date(15L, 7L, 2019L),
 				new Event.Date(15L, 7L, 2019L), "Workshop de comida saudavel, daTerra baixa, 15h.", 5L, "Porto", 20L);
 		Event proposed2 = new Event("Cozinhar Nunca Foi Facil", "Gastronomia", new Event.Date(20L, 12L, 2019L),
@@ -145,13 +145,13 @@ public class Interface {
 			findByMultipleFiltersMenu();
 			break;
 		case 8:
-			viewMostPopularMenu();
+			mostPopularMenu();
 			break;
 		case 9:
-			viewMostProfitableMenu();
+			mostProfitableMenu();
 			break;
 		case 10:
-			viewMostActiveMenu();
+			mostActiveMenu();
 			break;
 		case 0:
 			loginMenu();
@@ -162,6 +162,46 @@ public class Interface {
 		}
 	}
 	
+	public void mostActiveMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mostProfitableMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mostPopularMenu() {
+		Event event = agenda.mostPopularEvent();
+		
+		System.out.println(" ------------------------------------------- ");
+		System.out.println("|             Most Popular Event            |");
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.println(" Id: " + event.getID());
+		System.out.println(" Title: " + event.getTitle());
+		System.out.println(" Category: " + event.getCategory());
+		System.out.println(" City: " + event.getCity());
+		System.out.println(" Date: from " + event.getDateStart().day + "/" + event.getDateStart().month + "/"
+				+ event.getDateStart().year + " to " + event.getDateEnd().day + "/" + event.getDateEnd().month + "/"
+				+ event.getDateEnd().year);
+		System.out.println(" Price: " + event.getPrice() + " euros");
+		System.out.println(" Total Tickets: " + event.getTotalTickets() + " | Sold Tickets: " + event.getSoldTickets());
+		System.out.println(" Descriprion: " + event.getDescription());
+
+		System.out.println(" ------------------------------------------- ");
+
+		System.out.println("Press Enter key to continue...");
+        try
+        {
+            System.in.read();
+        }  
+        catch(Exception e)
+        {}
+		mainMenuAdmin();
+	}
+
 	public void addEventMenu() {
 		System.out.println(" ------------------------------------------- ");
 		System.out.println("|                 Add Event                 |");
@@ -563,18 +603,6 @@ public class Interface {
 		}
 
 		eventsMenu(events);
-	}
-
-	public void viewMostPopularMenu() {
-
-	}
-
-	public void viewMostProfitableMenu() {
-
-	}
-
-	public void viewMostActiveMenu() {
-
 	}
 
 	public void eventsMenu(VDMSet events) {
