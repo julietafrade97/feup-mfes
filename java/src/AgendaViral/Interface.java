@@ -1,17 +1,10 @@
 package AgendaViral;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.lang.Object;
 
-import org.overture.codegen.runtime.Maplet;
 import org.overture.codegen.runtime.SetUtil;
-import org.overture.codegen.runtime.Utils;
 import org.overture.codegen.runtime.VDMSet;
-import java.util.*;
-
-import AgendaViral.Event.Date;
 
 public class Interface {
 	private Agenda agenda;
