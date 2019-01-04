@@ -62,7 +62,6 @@ public class Interface {
 		agenda.proposeEvent(proposed2);
 		agenda.buyTicket(1, 5);
 
-		loginMenu();
 	}
 
 	public void loginMenu() {
